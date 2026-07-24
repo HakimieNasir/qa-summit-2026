@@ -464,7 +464,7 @@
   </div>
 
 <script>
-/* ---- Particles ---- */
+/* ---- Decorative Particles ---- */
 (function initParticles(){
   const wrap = document.getElementById('particles');
   for (let i = 0; i < 30; i++){
@@ -481,7 +481,7 @@
   }
 })();
 
-/* URL Prefills */
+/* URL Prefill Params */
 const urlParams = new URLSearchParams(window.location.search);
 const prefill = {
   fullName: urlParams.get('name') || '',
@@ -525,7 +525,7 @@ function clearQuestionError(qid){
   if (q) q.classList.remove('invalid');
 }
 
-/* Validation */
+/* Form Validation */
 const REQUIRED_RADIO = ['q1','q2','q3','q4','q7','q9'];
 const REQUIRED_TEXTAREA = ['q11','q12'];
 const MATRIX_ROWS = ['q8_registration','q8_venue','q8_schedule','q8_food','q8_communication'];
@@ -559,30 +559,28 @@ function validateForm(){
   return allValid;
 }
 
-/* Collect Data */
+/* Collect Data - Key names formatted to match Google Apps Script exactly */
 function collectSurveyData(){
   return {
-    fullName: prefill.fullName,
+    name: prefill.fullName,
     site: prefill.site,
-    email: prefill.email,
-    q1_overallSatisfaction: document.querySelector('input[name="q1"]:checked')?.value || '',
-    q2_contentQuality: document.querySelector('input[name="q2"]:checked')?.value || '',
-    q3_relevance: document.querySelector('input[name="q3"]:checked')?.value || '',
-    q4_speakerEffectiveness: document.querySelector('input[name="q4"]:checked')?.value || '',
-    q5_mostValuableSession: document.querySelector('input[name="q5"]').value.trim(),
-    q6_futureTopics: document.querySelector('input[name="q6"]').value.trim(),
-    q7_organizationSatisfaction: document.querySelector('input[name="q7"]:checked')?.value || '',
-    q8_registrationProcess: document.querySelector('input[name="q8_registration"]:checked')?.value || '',
-    q8_venueFacilities: document.querySelector('input[name="q8_venue"]:checked')?.value || '',
-    q8_eventSchedule: document.querySelector('input[name="q8_schedule"]:checked')?.value || '',
-    q8_foodRefreshments: document.querySelector('input[name="q8_food"]:checked')?.value || '',
-    q8_communicationInfo: document.querySelector('input[name="q8_communication"]:checked')?.value || '',
-    q9_knowledgeEnhancement: document.querySelector('input[name="q9"]:checked')?.value || '',
-    q10_recommendScore: npsValue,
-    q11_mostEnjoyed: document.querySelector('textarea[name="q11"]').value.trim(),
-    q12_improvementSuggestions: document.querySelector('textarea[name="q12"]').value.trim(),
-    q13_additionalComments: document.querySelector('textarea[name="q13"]').value.trim(),
-    submittedAt: new Date().toISOString()
+    q1: document.querySelector('input[name="q1"]:checked')?.value || '',
+    q2: document.querySelector('input[name="q2"]:checked')?.value || '',
+    q3: document.querySelector('input[name="q3"]:checked')?.value || '',
+    q4: document.querySelector('input[name="q4"]:checked')?.value || '',
+    q5: document.querySelector('input[name="q5"]').value.trim(),
+    q6: document.querySelector('input[name="q6"]').value.trim(),
+    q7: document.querySelector('input[name="q7"]:checked')?.value || '',
+    q8a: document.querySelector('input[name="q8_registration"]:checked')?.value || '',
+    q8b: document.querySelector('input[name="q8_venue"]:checked')?.value || '',
+    q8c: document.querySelector('input[name="q8_schedule"]:checked')?.value || '',
+    q8d: document.querySelector('input[name="q8_food"]:checked')?.value || '',
+    q8e: document.querySelector('input[name="q8_communication"]:checked')?.value || '',
+    q9: document.querySelector('input[name="q9"]:checked')?.value || '',
+    q10: npsValue,
+    q11: document.querySelector('textarea[name="q11"]').value.trim(),
+    q12: document.querySelector('textarea[name="q12"]').value.trim(),
+    q13: document.querySelector('textarea[name="q13"]').value.trim()
   };
 }
 
@@ -592,7 +590,6 @@ const submitBtn = document.getElementById('submitBtn');
 const btnLabel = document.getElementById('btnLabel');
 const closingPanel = document.getElementById('closingPanel');
 
-// YOUR GOOGLE SCRIPT EXECUTION URL
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyYhQnEqLmmFw8UdVnN0y704FIjc-nUTpijFwZ7te_EDQf_lA6DhYOInPEgdG4OZOI_mg/exec';
 
 form.addEventListener('submit', function(e){
@@ -610,12 +607,12 @@ form.addEventListener('submit', function(e){
   submitBtn.disabled = true;
   btnLabel.textContent = 'Submitting...';
 
-  // Send request using fetch with mode: 'no-cors' to prevent CORS issues with Google Apps Script
+  // Send request using text/plain to prevent CORS preflight issues with Apps Script
   fetch(SCRIPT_URL, {
     method: 'POST',
     mode: 'no-cors',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'text/plain;charset=utf-8'
     },
     body: JSON.stringify(surveyData)
   })
