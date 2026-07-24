@@ -6,7 +6,6 @@
 <title>QA Summit 2026 — Feedback Survey</title>
 
 <style>
-  /* Design tokens & Base Styling */
   :root{
     --navy-950:      #060a1a;
     --navy-900:      #0a1230;
@@ -43,7 +42,6 @@
   *{ margin:0; padding:0; box-sizing:border-box; }
   html,body{ font-family: var(--font-body); background: var(--navy-950); color: var(--text-primary); }
 
-  /* ---- background scene ---- */
   .scene{
     position: fixed; inset:0; z-index:0; overflow:hidden;
     background:
@@ -80,14 +78,10 @@
     100%{ transform:translateY(-110vh) translateX(var(--drift,20px)); opacity:0; }
   }
 
-  /* ---- layout ---- */
   .page{ position:relative; z-index:1; min-height:100vh; display:flex; flex-direction:column; align-items:center; padding: 40px 16px 80px; }
 
   header.hero{ text-align:center; max-width:620px; margin-bottom:20px; }
-  .eyebrow{
-    font-family: var(--font-mono); letter-spacing:.22em; text-transform:uppercase;
-    font-size:11px; color: var(--cyan-400); margin-bottom:10px;
-  }
+  .eyebrow{ font-family: var(--font-mono); letter-spacing:.22em; text-transform:uppercase; font-size:11px; color: var(--cyan-400); margin-bottom:10px; }
   h1{
     font-family: var(--font-display); font-weight:700; font-size: clamp(26px,5vw,38px); line-height:1.1;
     background: linear-gradient(100deg, #ffffff 10%, var(--cyan-400) 45%, var(--magenta-500) 75%, var(--orange-400) 100%);
@@ -107,7 +101,6 @@
   .progress-track{ height:6px; border-radius:999px; background: rgba(255,255,255,0.08); overflow:hidden; border:1px solid var(--glass-border); }
   .progress-fill{ height:100%; width:100%; border-radius:999px; background: linear-gradient(90deg, var(--purple-600), var(--cyan-400)); box-shadow:0 0 12px var(--cyan-400); }
 
-  /* ---- form shell ---- */
   form#surveyForm{ width:100%; max-width: 640px; margin-top: 26px; display:flex; flex-direction:column; gap:20px; }
 
   .section-card{
@@ -133,9 +126,7 @@
   .question .q-text .req{ color: var(--magenta-500); margin-left:3px; }
   .question .q-hint{ font-size:12px; color: var(--text-muted); margin-top:-6px; margin-bottom:10px; }
 
-  /* radio option cards */
   .options{ display:flex; flex-direction:column; gap:8px; }
-  .options.row{ flex-direction:row; flex-wrap:wrap; }
   .opt{
     position:relative; display:flex; align-items:center; gap:10px;
     padding: 10px 14px; border-radius: var(--radius-sm);
@@ -147,7 +138,6 @@
   .opt input{ accent-color: var(--cyan-400); width:15px; height:15px; flex-shrink:0; }
   .opt.checked{ border-color: var(--cyan-400); background: rgba(34,232,255,0.09); color: var(--text-primary); box-shadow: 0 0 14px rgba(34,232,255,0.15); }
 
-  /* NPS scale row (1–10) */
   .nps-row{ display:flex; gap:6px; flex-wrap:wrap; }
   .nps-opt{
     width:38px; height:38px; border-radius:8px; display:flex; align-items:center; justify-content:center;
@@ -159,7 +149,6 @@
   .nps-opt.checked{ border-color: var(--cyan-400); background: linear-gradient(135deg, var(--cyan-400), var(--purple-600)); color: var(--navy-950); font-weight:700; box-shadow:0 0 14px rgba(34,232,255,0.35); }
   .nps-scale-labels{ display:flex; justify-content:space-between; font-size:11px; color: var(--text-muted); margin-top:6px; }
 
-  /* text inputs */
   .field-input, .field-textarea{
     width:100%; padding: 11px 14px; font-family: var(--font-body); font-size:14px;
     color: var(--text-primary); background: rgba(255,255,255,0.045);
@@ -171,7 +160,6 @@
   .field-input:focus, .field-textarea:focus{ border-color: var(--cyan-400); box-shadow: 0 0 0 3px rgba(34,232,255,0.15); }
   .field-textarea{ min-height: 90px; }
 
-  /* ratings matrix table */
   .matrix-wrap{ overflow-x:auto; border-radius: var(--radius-sm); border:1px solid rgba(255,255,255,0.1); }
   table.matrix{ width:100%; border-collapse:collapse; min-width: 460px; }
   table.matrix th, table.matrix td{ padding: 10px 10px; text-align:center; font-size:12.5px; }
@@ -190,7 +178,6 @@
   .question.invalid .field-input,
   .question.invalid .field-textarea{ border-color: var(--error); }
 
-  /* submit */
   .submit-wrap{ display:flex; flex-direction:column; align-items:center; gap:12px; margin-top: 4px; }
   .submit-btn{
     width:100%; padding: 15px 18px; font-family: var(--font-display); font-weight:600; font-size:15px;
@@ -209,7 +196,6 @@
   @keyframes spin{ to{ transform: rotate(360deg); } }
   .submit-btn.loading .spinner{ display:inline-block; }
 
-  /* closing / thank-you panel */
   .closing-panel{ display:none; text-align:center; max-width: 520px; }
   .closing-panel.show{ display:block; animation: cardIn .6s var(--ease) both; }
   .closing-icon{
@@ -223,14 +209,6 @@
   .closing-panel p{ font-size:14.5px; color: var(--text-secondary); line-height:1.7; margin-bottom:6px; }
 
   footer.foot{ margin-top: 30px; font-size:11.5px; color: var(--text-muted); text-align:center; }
-
-  @media (prefers-reduced-motion: reduce){
-    *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; }
-  }
-  @media (max-width: 560px){
-    .section-card{ padding: 20px 18px 20px; }
-    .nps-opt{ width:32px; height:32px; font-size:12px; }
-  }
 </style>
 </head>
 <body>
@@ -242,7 +220,6 @@
   </div>
 
   <div class="page">
-
     <header class="hero">
       <div class="eyebrow">Quality &middot; Innovation &middot; Excellence</div>
       <h1>QA Summit 2026</h1>
@@ -259,10 +236,8 @@
       <div class="progress-track"><div class="progress-fill"></div></div>
     </div>
 
-    <!-- ============================== SURVEY FORM ============================== -->
     <form id="surveyForm" novalidate>
-
-      <!-- SECTION A — Overall Experience -->
+      <!-- SECTION A -->
       <section class="section-card">
         <div class="section-head"><span class="section-tag">A</span><h3>Overall Experience</h3></div>
 
@@ -303,7 +278,7 @@
         </div>
       </section>
 
-      <!-- SECTION B — Speakers & Sessions -->
+      <!-- SECTION B -->
       <section class="section-card">
         <div class="section-head"><span class="section-tag">B</span><h3>Speakers &amp; Sessions</h3></div>
 
@@ -330,7 +305,7 @@
         </div>
       </section>
 
-      <!-- SECTION C — Event Organization -->
+      <!-- SECTION C -->
       <section class="section-card">
         <div class="section-head"><span class="section-tag">C</span><h3>Event Organization</h3></div>
 
@@ -354,35 +329,35 @@
                 <tr><th style="text-align:left; padding-left:12px;">Aspect</th><th>Excellent</th><th>Good</th><th>Average</th><th>Poor</th></tr>
               </thead>
               <tbody>
-                <tr data-row="Registration Process">
+                <tr>
                   <th>Registration Process</th>
                   <td><input type="radio" name="q8_registration" value="Excellent"></td>
                   <td><input type="radio" name="q8_registration" value="Good"></td>
                   <td><input type="radio" name="q8_registration" value="Average"></td>
                   <td><input type="radio" name="q8_registration" value="Poor"></td>
                 </tr>
-                <tr data-row="Venue & Facilities">
+                <tr>
                   <th>Venue &amp; Facilities</th>
                   <td><input type="radio" name="q8_venue" value="Excellent"></td>
                   <td><input type="radio" name="q8_venue" value="Good"></td>
                   <td><input type="radio" name="q8_venue" value="Average"></td>
                   <td><input type="radio" name="q8_venue" value="Poor"></td>
                 </tr>
-                <tr data-row="Event Schedule">
+                <tr>
                   <th>Event Schedule</th>
                   <td><input type="radio" name="q8_schedule" value="Excellent"></td>
                   <td><input type="radio" name="q8_schedule" value="Good"></td>
                   <td><input type="radio" name="q8_schedule" value="Average"></td>
                   <td><input type="radio" name="q8_schedule" value="Poor"></td>
                 </tr>
-                <tr data-row="Food & Refreshments">
+                <tr>
                   <th>Food &amp; Refreshments</th>
                   <td><input type="radio" name="q8_food" value="Excellent"></td>
                   <td><input type="radio" name="q8_food" value="Good"></td>
                   <td><input type="radio" name="q8_food" value="Average"></td>
                   <td><input type="radio" name="q8_food" value="Poor"></td>
                 </tr>
-                <tr data-row="Communication & Information">
+                <tr>
                   <th>Communication &amp; Information</th>
                   <td><input type="radio" name="q8_communication" value="Excellent"></td>
                   <td><input type="radio" name="q8_communication" value="Good"></td>
@@ -396,7 +371,7 @@
         </div>
       </section>
 
-      <!-- SECTION D — Impact & Recommendation -->
+      <!-- SECTION D -->
       <section class="section-card">
         <div class="section-head"><span class="section-tag">D</span><h3>Impact &amp; Recommendation</h3></div>
 
@@ -420,7 +395,7 @@
         </div>
       </section>
 
-      <!-- SECTION E — Open Feedback -->
+      <!-- SECTION E -->
       <section class="section-card">
         <div class="section-head"><span class="section-tag">E</span><h3>Open Feedback</h3></div>
 
@@ -450,21 +425,18 @@
       </div>
     </form>
 
-    <!-- ============================ CLOSING MESSAGE ============================ -->
     <div class="closing-panel" id="closingPanel">
       <div class="closing-icon">
         <svg viewBox="0 0 24 24" fill="none"><path d="M4 12.5l5 5L20 6.5" stroke="#33f2b0" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </div>
       <h2>Thank you for your feedback! 🚀</h2>
       <p>We appreciate your participation and look forward to seeing you at future QA events.</p>
-      <p>Your insights will help us continuously improve and deliver even better experiences.</p>
     </div>
 
     <footer class="foot">QA Summit 2026 &middot; Feedback Survey</footer>
   </div>
 
 <script>
-/* ---- Decorative Particles ---- */
 (function initParticles(){
   const wrap = document.getElementById('particles');
   for (let i = 0; i < 30; i++){
@@ -481,15 +453,15 @@
   }
 })();
 
-/* URL Prefill Params */
+/* Extracted Prefill Parameters passed from register.html */
 const urlParams = new URLSearchParams(window.location.search);
 const prefill = {
-  fullName: urlParams.get('name') || '',
-  site: urlParams.get('site') || '',
-  email: urlParams.get('email') || ''
+  fullName: urlParams.get('name')  || '',
+  site:     urlParams.get('site')  || '',
+  phone:    urlParams.get('phone') || '',
+  email:    urlParams.get('email') || ''
 };
 
-/* NPS scale */
 const npsRow = document.getElementById('npsRow');
 for (let i = 1; i <= 10; i++){
   const btn = document.createElement('div');
@@ -508,7 +480,6 @@ npsRow.addEventListener('click', (e) => {
   clearQuestionError('q10');
 });
 
-/* Highlight options */
 document.querySelectorAll('.opt').forEach(opt => {
   const input = opt.querySelector('input');
   input.addEventListener('change', () => {
@@ -525,7 +496,6 @@ function clearQuestionError(qid){
   if (q) q.classList.remove('invalid');
 }
 
-/* Form Validation */
 const REQUIRED_RADIO = ['q1','q2','q3','q4','q7','q9'];
 const REQUIRED_TEXTAREA = ['q11','q12'];
 const MATRIX_ROWS = ['q8_registration','q8_venue','q8_schedule','q8_food','q8_communication'];
@@ -559,11 +529,12 @@ function validateForm(){
   return allValid;
 }
 
-/* Collect Data - Key names formatted to match Google Apps Script exactly */
 function collectSurveyData(){
   return {
     name: prefill.fullName,
     site: prefill.site,
+    phone: prefill.phone,
+    email: prefill.email,
     q1: document.querySelector('input[name="q1"]:checked')?.value || '',
     q2: document.querySelector('input[name="q2"]:checked')?.value || '',
     q3: document.querySelector('input[name="q3"]:checked')?.value || '',
@@ -584,7 +555,6 @@ function collectSurveyData(){
   };
 }
 
-/* Submit Handler */
 const form = document.getElementById('surveyForm');
 const submitBtn = document.getElementById('submitBtn');
 const btnLabel = document.getElementById('btnLabel');
@@ -607,13 +577,10 @@ form.addEventListener('submit', function(e){
   submitBtn.disabled = true;
   btnLabel.textContent = 'Submitting...';
 
-  // Send request using text/plain to prevent CORS preflight issues with Apps Script
   fetch(SCRIPT_URL, {
     method: 'POST',
     mode: 'no-cors',
-    headers: {
-      'Content-Type': 'text/plain;charset=utf-8'
-    },
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
     body: JSON.stringify(surveyData)
   })
   .then(() => {
