@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>QA Summit 2026 — Feedback Registration</title>
+<title>QA Summit 2026 — Feedback Survey</title>
 
 <style>
   :root{
@@ -34,181 +34,181 @@
     --radius-lg: 24px;
     --radius-md: 14px;
     --radius-sm: 8px;
-
     --ease: cubic-bezier(.22,1,.36,1);
   }
 
   @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap');
 
   *{ margin:0; padding:0; box-sizing:border-box; }
-
-  html,body{
-    height:100%;
-    font-family: var(--font-body);
-    background: var(--navy-950);
-    color: var(--text-primary);
-    overflow-x:hidden;
-  }
+  html,body{ font-family: var(--font-body); background: var(--navy-950); color: var(--text-primary); }
 
   .scene{
-    position: fixed; inset: 0; z-index: 0; overflow: hidden;
+    position: fixed; inset:0; z-index:0; overflow:hidden;
     background:
-      radial-gradient(ellipse 120% 60% at 50% 0%, rgba(109,60,240,0.35), transparent 60%),
+      radial-gradient(ellipse 120% 60% at 50% 0%, rgba(109,60,240,0.30), transparent 60%),
       linear-gradient(180deg, var(--navy-950) 0%, #101a44 45%, #2a1240 75%, #3a1030 100%);
   }
-
   .horizon-glow{
-    position:absolute; left:50%; top:58%; width:140vw; height:60vh;
+    position:absolute; left:50%; top:0%; width:140vw; height:60vh;
     transform: translate(-50%,-50%);
-    background: radial-gradient(closest-side, rgba(255,138,76,0.55), rgba(255,62,201,0.28) 45%, transparent 75%);
+    background: radial-gradient(closest-side, rgba(255,138,76,0.4), rgba(255,62,201,0.2) 45%, transparent 75%);
     filter: blur(60px); animation: pulseGlow 8s ease-in-out infinite;
   }
-  @keyframes pulseGlow{ 0%,100%{ opacity:.75; } 50%{ opacity:1; } }
-
-  .skyline{
-    position:absolute; left:0; right:0; bottom:0; height:38vh;
-    background:
-      linear-gradient(180deg, transparent, rgba(6,10,26,0.9) 70%),
-      repeating-linear-gradient(90deg, rgba(4,6,18,0.95) 0 26px, transparent 26px 30px);
-    -webkit-mask-image: linear-gradient(180deg, transparent, black 30%);
-            mask-image: linear-gradient(180deg, transparent, black 30%);
-  }
-  .skyline::before{
-    content:""; position:absolute; inset:0;
-    background-image: linear-gradient(180deg, rgba(34,232,255,0.06) 0 1px, transparent 1px);
-    background-size: 100% 22px; mix-blend-mode: screen;
-  }
-
+  @keyframes pulseGlow{ 0%,100%{opacity:.7;} 50%{opacity:1;} }
   .circuits{
-    position:absolute; inset:0; opacity:.25;
+    position:absolute; inset:0; opacity:.18;
     background-image:
       linear-gradient(rgba(34,232,255,0.15) 1px, transparent 1px),
       linear-gradient(90deg, rgba(34,232,255,0.15) 1px, transparent 1px);
     background-size: 64px 64px;
-    -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 40%, black, transparent 80%);
-            mask-image: radial-gradient(ellipse 90% 70% at 50% 40%, black, transparent 80%);
+    -webkit-mask-image: radial-gradient(ellipse 90% 90% at 50% 20%, black, transparent 85%);
+            mask-image: radial-gradient(ellipse 90% 90% at 50% 20%, black, transparent 85%);
     animation: drift 40s linear infinite;
   }
-  @keyframes drift{ from{ background-position: 0 0, 0 0; } to{ background-position: 128px 128px, 128px 128px; } }
-
+  @keyframes drift{ from{background-position:0 0,0 0;} to{background-position:128px 128px,128px 128px;} }
   .particles{ position:absolute; inset:0; pointer-events:none; }
   .particle{
-    position:absolute; border-radius:50%; background: radial-gradient(circle, #fff, transparent 70%);
+    position:absolute; border-radius:50%;
+    background: radial-gradient(circle, #fff, transparent 70%);
     opacity:.7; animation: floatUp linear infinite;
   }
   @keyframes floatUp{
-    0%{ transform: translateY(0) translateX(0); opacity:0; }
+    0%{ transform:translateY(0) translateX(0); opacity:0; }
     10%{ opacity:.8; } 90%{ opacity:.5; }
-    100%{ transform: translateY(-110vh) translateX(var(--drift,20px)); opacity:0; }
+    100%{ transform:translateY(-110vh) translateX(var(--drift,20px)); opacity:0; }
   }
 
-  .page{
-    position:relative; z-index:1; min-height:100vh;
-    display:flex; flex-direction:column; align-items:center; justify-content:center;
-    padding: 40px 20px;
-  }
+  .page{ position:relative; z-index:1; min-height:100vh; display:flex; flex-direction:column; align-items:center; padding: 40px 16px 80px; }
 
-  .badge{ position:relative; width:76px; height:76px; margin-bottom:22px; }
-  .badge svg{ width:100%; height:100%; }
-  .badge .ring{ animation: spin 14s linear infinite; transform-origin: 50% 50%; }
-  .badge .ring--rev{ animation: spin 22s linear infinite reverse; transform-origin: 50% 50%; }
-  @keyframes spin{ to{ transform: rotate(360deg); } }
-  .badge .core{ filter: drop-shadow(0 0 10px var(--cyan-400)); }
-
-  header.hero{ text-align:center; margin-bottom: 28px; max-width: 560px; }
-  .eyebrow{ font-family: var(--font-mono); letter-spacing: .22em; text-transform: uppercase; font-size: 11px; color: var(--cyan-400); margin-bottom: 10px; }
+  header.hero{ text-align:center; max-width:620px; margin-bottom:20px; }
+  .eyebrow{ font-family: var(--font-mono); letter-spacing:.22em; text-transform:uppercase; font-size:11px; color: var(--cyan-400); margin-bottom:10px; }
   h1{
-    font-family: var(--font-display); font-weight: 700; font-size: clamp(28px, 5vw, 42px); line-height: 1.1;
+    font-family: var(--font-display); font-weight:700; font-size: clamp(26px,5vw,38px); line-height:1.1;
     background: linear-gradient(100deg, #ffffff 10%, var(--cyan-400) 45%, var(--magenta-500) 75%, var(--orange-400) 100%);
-    -webkit-background-clip: text; background-clip: text; color: transparent;
+    -webkit-background-clip:text; background-clip:text; color:transparent;
   }
-  h2.subtitle{ font-family: var(--font-display); font-weight: 500; font-size: clamp(15px, 2.4vw, 18px); color: var(--text-secondary); margin-top: 6px; }
-  p.lede{ margin-top: 16px; color: var(--text-secondary); font-size: 14.5px; line-height: 1.6; }
+  h2.subtitle{ font-family: var(--font-display); font-weight:500; font-size: clamp(14px,2.2vw,17px); color: var(--text-secondary); margin-top:6px; }
+  p.lede{ margin-top:14px; color: var(--text-secondary); font-size:14px; line-height:1.6; }
+  .time-pill{
+    display:inline-flex; align-items:center; gap:6px; margin-top:14px;
+    padding:6px 14px; border-radius:999px; font-family:var(--font-mono); font-size:11.5px;
+    color: var(--cyan-400); border:1px solid rgba(34,232,255,0.35); background: rgba(34,232,255,0.06);
+  }
 
-  .progress-wrap{ width: 100%; max-width: 420px; margin: 24px auto 0; }
-  .progress-label{ display:flex; justify-content:space-between; font-family: var(--font-mono); font-size: 11px; letter-spacing:.05em; color: var(--text-muted); margin-bottom: 6px; }
+  .progress-wrap{ width:100%; max-width:460px; margin: 22px auto 0; }
+  .progress-label{ display:flex; justify-content:space-between; font-family:var(--font-mono); font-size:11px; letter-spacing:.05em; color: var(--text-muted); margin-bottom:6px; }
   .progress-label span.active{ color: var(--cyan-400); }
-  .progress-track{ height: 6px; border-radius: 999px; background: rgba(255,255,255,0.08); overflow:hidden; border: 1px solid var(--glass-border); }
-  .progress-fill{
-    height:100%; width: 50%; border-radius: 999px; background: linear-gradient(90deg, var(--purple-600), var(--cyan-400));
-    box-shadow: 0 0 12px var(--cyan-400); animation: fillShimmer 2.4s ease-in-out infinite;
-  }
-  @keyframes fillShimmer{ 0%,100%{ filter:brightness(1); } 50%{ filter:brightness(1.35); } }
+  .progress-track{ height:6px; border-radius:999px; background: rgba(255,255,255,0.08); overflow:hidden; border:1px solid var(--glass-border); }
+  .progress-fill{ height:100%; width:100%; border-radius:999px; background: linear-gradient(90deg, var(--purple-600), var(--cyan-400)); box-shadow:0 0 12px var(--cyan-400); }
 
-  .card{
-    position:relative; width:100%; max-width: 460px; margin-top: 26px; padding: 34px 30px 30px;
-    border-radius: var(--radius-lg); background: var(--glass-bg); border: 1px solid var(--glass-border);
+  form#surveyForm{ width:100%; max-width: 640px; margin-top: 26px; display:flex; flex-direction:column; gap:20px; }
+
+  .section-card{
+    position:relative; padding: 26px 26px 24px; border-radius: var(--radius-lg);
+    background: var(--glass-bg); border:1px solid var(--glass-border);
     backdrop-filter: blur(18px) saturate(140%); -webkit-backdrop-filter: blur(18px) saturate(140%);
-    box-shadow: 0 0 0 1px var(--glass-highlight) inset, 0 20px 60px rgba(0,0,0,0.45), 0 0 40px rgba(109,60,240,0.15);
-    animation: cardIn .7s var(--ease) both;
+    box-shadow: 0 0 0 1px var(--glass-highlight) inset, 0 20px 50px rgba(0,0,0,0.4);
+    animation: cardIn .6s var(--ease) both;
   }
-  @keyframes cardIn{ from{ opacity:0; transform: translateY(18px) scale(.98); } to{ opacity:1; transform: translateY(0) scale(1); } }
-  .card::before{
-    content:""; position:absolute; inset:-1px; border-radius: inherit; padding:1px;
-    background: linear-gradient(120deg, var(--cyan-400), transparent 30%, transparent 70%, var(--magenta-500));
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor; mask-composite: exclude; opacity:.6; pointer-events:none;
+  @keyframes cardIn{ from{opacity:0; transform:translateY(14px);} to{opacity:1; transform:translateY(0);} }
+
+  .section-head{ display:flex; align-items:baseline; gap:10px; margin-bottom:18px; }
+  .section-tag{
+    font-family: var(--font-mono); font-size:11px; letter-spacing:.1em; color: var(--navy-950);
+    background: linear-gradient(100deg, var(--cyan-400), var(--purple-600));
+    padding: 3px 9px; border-radius:6px; font-weight:600; flex-shrink:0;
   }
+  .section-head h3{ font-family: var(--font-display); font-size:16.5px; font-weight:600; color: var(--text-primary); }
 
-  .field{ margin-bottom: 18px; position:relative; }
-  .field label{ display:block; font-size: 12.5px; font-weight:600; letter-spacing:.03em; color: var(--text-secondary); margin-bottom: 7px; }
-  .field label .req{ color: var(--magenta-500); margin-left:3px; }
+  .question{ margin-bottom: 22px; }
+  .question:last-child{ margin-bottom:0; }
+  .question .q-text{ font-size:14px; font-weight:500; color: var(--text-primary); margin-bottom: 11px; line-height:1.45; }
+  .question .q-text .req{ color: var(--magenta-500); margin-left:3px; }
+  .question .q-hint{ font-size:12px; color: var(--text-muted); margin-top:-6px; margin-bottom:10px; }
 
-  .field input, .field select{
-    width:100%; padding: 12px 14px; font-family: var(--font-body); font-size: 14.5px;
+  .options{ display:flex; flex-direction:column; gap:8px; }
+  .opt{
+    position:relative; display:flex; align-items:center; gap:10px;
+    padding: 10px 14px; border-radius: var(--radius-sm);
+    border:1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.035);
+    cursor:pointer; transition: border-color .2s var(--ease), background .2s var(--ease), transform .15s var(--ease);
+    font-size: 13.5px; color: var(--text-secondary);
+  }
+  .opt:hover{ border-color: rgba(34,232,255,0.4); background: rgba(255,255,255,0.06); transform: translateY(-1px); }
+  .opt input{ accent-color: var(--cyan-400); width:15px; height:15px; flex-shrink:0; }
+  .opt.checked{ border-color: var(--cyan-400); background: rgba(34,232,255,0.09); color: var(--text-primary); box-shadow: 0 0 14px rgba(34,232,255,0.15); }
+
+  .nps-row{ display:flex; gap:6px; flex-wrap:wrap; }
+  .nps-opt{
+    width:38px; height:38px; border-radius:8px; display:flex; align-items:center; justify-content:center;
+    border:1px solid rgba(255,255,255,0.14); background: rgba(255,255,255,0.035);
+    font-family: var(--font-mono); font-size:13px; color: var(--text-secondary); cursor:pointer;
+    transition: all .18s var(--ease);
+  }
+  .nps-opt:hover{ border-color: rgba(34,232,255,0.5); transform: translateY(-2px); }
+  .nps-opt.checked{ border-color: var(--cyan-400); background: linear-gradient(135deg, var(--cyan-400), var(--purple-600)); color: var(--navy-950); font-weight:700; box-shadow:0 0 14px rgba(34,232,255,0.35); }
+  .nps-scale-labels{ display:flex; justify-content:space-between; font-size:11px; color: var(--text-muted); margin-top:6px; }
+
+  .field-input, .field-textarea{
+    width:100%; padding: 11px 14px; font-family: var(--font-body); font-size:14px;
     color: var(--text-primary); background: rgba(255,255,255,0.045);
-    border: 1px solid rgba(255,255,255,0.12); border-radius: var(--radius-sm); outline: none;
-    transition: border-color .25s var(--ease), box-shadow .25s var(--ease), background .25s var(--ease);
+    border:1px solid rgba(255,255,255,0.12); border-radius: var(--radius-sm); outline:none; resize:vertical;
+    transition: border-color .2s var(--ease), box-shadow .2s var(--ease);
   }
-  .field select{
-    appearance: none; -webkit-appearance: none;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8'><path d='M1 1l5 5 5-5' stroke='%2322e8ff' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
-    background-repeat:no-repeat; background-position: right 14px center; padding-right: 34px;
+  .field-input::placeholder, .field-textarea::placeholder{ color: var(--text-muted); }
+  .field-input:hover, .field-textarea:hover{ border-color: rgba(34,232,255,0.35); }
+  .field-input:focus, .field-textarea:focus{ border-color: var(--cyan-400); box-shadow: 0 0 0 3px rgba(34,232,255,0.15); }
+  .field-textarea{ min-height: 90px; }
+
+  .matrix-wrap{ overflow-x:auto; border-radius: var(--radius-sm); border:1px solid rgba(255,255,255,0.1); }
+  table.matrix{ width:100%; border-collapse:collapse; min-width: 460px; }
+  table.matrix th, table.matrix td{ padding: 10px 10px; text-align:center; font-size:12.5px; }
+  table.matrix thead th{
+    background: rgba(255,255,255,0.05); color: var(--cyan-400); font-family: var(--font-mono);
+    font-weight:500; letter-spacing:.02em; border-bottom:1px solid rgba(255,255,255,0.1);
   }
-  .field select option{ background: var(--navy-900); color: var(--text-primary); }
-  .field input::placeholder{ color: var(--text-muted); }
-  .field input:hover, .field select:hover{ border-color: rgba(34,232,255,0.35); background: rgba(255,255,255,0.065); }
-  .field input:focus, .field select:focus{ border-color: var(--cyan-400); box-shadow: 0 0 0 3px rgba(34,232,255,0.15), 0 0 18px rgba(34,232,255,0.25); }
-  .field.invalid input, .field.invalid select{ border-color: var(--error); box-shadow: 0 0 0 3px rgba(255,92,122,0.12); }
-  .field.valid input, .field.valid select{ border-color: var(--success); }
+  table.matrix tbody th{ text-align:left; color: var(--text-secondary); font-weight:500; padding-left:12px; }
+  table.matrix tbody tr:nth-child(odd){ background: rgba(255,255,255,0.02); }
+  table.matrix td input{ accent-color: var(--cyan-400); width:16px; height:16px; cursor:pointer; }
 
-  .error-msg{ display:none; align-items:center; gap:6px; margin-top: 6px; font-size: 12px; color: var(--error); font-weight:500; }
-  .field.invalid .error-msg{ display:flex; }
-  .error-msg::before{ content:"⚠"; font-size:12px; }
+  .error-msg{ display:none; margin-top:8px; font-size:12px; color: var(--error); font-weight:500; align-items:center; gap:6px; }
+  .error-msg::before{ content:"⚠"; }
+  .question.invalid .error-msg{ display:flex; }
+  .question.invalid .options .opt,
+  .question.invalid .field-input,
+  .question.invalid .field-textarea{ border-color: var(--error); }
 
+  .submit-wrap{ display:flex; flex-direction:column; align-items:center; gap:12px; margin-top: 4px; }
   .submit-btn{
-    width:100%; margin-top: 8px; padding: 14px 18px; font-family: var(--font-display); font-weight: 600;
-    font-size: 15px; color: var(--navy-950);
-    background: linear-gradient(100deg, var(--cyan-400), var(--blue-500) 55%, var(--purple-600));
-    border: none; border-radius: var(--radius-sm); cursor:pointer; position:relative; overflow:hidden;
+    width:100%; padding: 15px 18px; font-family: var(--font-display); font-weight:600; font-size:15px;
+    color: var(--navy-950); background: linear-gradient(100deg, var(--cyan-400), var(--blue-500) 55%, var(--purple-600));
+    border:none; border-radius: var(--radius-sm); cursor:pointer;
     transition: transform .2s var(--ease), box-shadow .2s var(--ease), filter .2s var(--ease);
     box-shadow: 0 10px 30px rgba(47,109,246,0.35);
   }
-  .submit-btn:hover:not(:disabled){ transform: translateY(-2px); box-shadow: 0 14px 36px rgba(34,232,255,0.4); filter: brightness(1.06); }
-  .submit-btn:disabled{ cursor:not-allowed; filter: grayscale(.4) brightness(.7); box-shadow:none; }
-  .submit-btn .label{ display:inline-flex; align-items:center; gap:10px; }
-
-  .spinner{
-    width:16px; height:16px; border-radius:50%; border: 2px solid rgba(10,14,30,0.35);
-    border-top-color: var(--navy-950); animation: spin .7s linear infinite; display:none;
+  .submit-btn:hover:not(:disabled){ transform: translateY(-2px); box-shadow: 0 14px 36px rgba(34,232,255,0.4); }
+  .submit-btn:disabled{ cursor:not-allowed; filter:grayscale(.4) brightness(.7); box-shadow:none; }
+  .submit-btn .spinner{
+    display:none; width:16px; height:16px; border-radius:50%; margin-right:8px;
+    border:2px solid rgba(10,14,30,0.35); border-top-color: var(--navy-950);
+    animation: spin .7s linear infinite; vertical-align:-3px;
   }
+  @keyframes spin{ to{ transform: rotate(360deg); } }
   .submit-btn.loading .spinner{ display:inline-block; }
 
-  .success-panel{ display:none; text-align:center; padding: 10px 4px 4px; }
-  .success-panel.show{ display:block; animation: cardIn .5s var(--ease) both; }
-  .success-icon{
-    width:56px; height:56px; margin: 4px auto 14px; border-radius:50%;
+  .closing-panel{ display:none; text-align:center; max-width: 520px; }
+  .closing-panel.show{ display:block; animation: cardIn .6s var(--ease) both; }
+  .closing-icon{
+    width:64px; height:64px; margin: 0 auto 18px; border-radius:50%;
     display:flex; align-items:center; justify-content:center;
     background: radial-gradient(circle, rgba(51,242,176,0.25), transparent 70%);
-    border: 1px solid rgba(51,242,176,0.5); box-shadow: 0 0 24px rgba(51,242,176,0.35);
+    border:1px solid rgba(51,242,176,0.5); box-shadow: 0 0 26px rgba(51,242,176,0.35);
   }
-  .success-icon svg{ width:26px; height:26px; }
-  .success-panel h3{ font-family: var(--font-display); font-size: 19px; color: var(--text-primary); margin-bottom:8px; }
-  .success-panel p{ font-size: 13.5px; color: var(--text-secondary); margin-bottom: 4px; }
-  .success-panel .redirect-note{ margin-top: 14px; font-family: var(--font-mono); font-size: 11.5px; color: var(--cyan-400); }
+  .closing-icon svg{ width:30px; height:30px; }
+  .closing-panel h2{ font-family: var(--font-display); font-size: clamp(22px,4vw,28px); margin-bottom:12px; color: var(--text-primary); }
+  .closing-panel p{ font-size:14.5px; color: var(--text-secondary); line-height:1.7; margin-bottom:6px; }
 
-  footer.foot{ margin-top: 26px; font-size: 11.5px; color: var(--text-muted); text-align:center; }
-  @media (max-width: 480px){ .card{ padding: 26px 20px 24px; border-radius: var(--radius-md); } h1{ font-size: 26px; } }
+  footer.foot{ margin-top: 30px; font-size:11.5px; color: var(--text-muted); text-align:center; }
 </style>
 </head>
 <body>
@@ -216,101 +216,230 @@
   <div class="scene" aria-hidden="true">
     <div class="horizon-glow"></div>
     <div class="circuits"></div>
-    <div class="skyline"></div>
     <div class="particles" id="particles"></div>
   </div>
 
   <div class="page">
-    <div class="badge" aria-hidden="true">
-      <svg viewBox="0 0 76 76">
-        <g class="ring">
-          <circle cx="38" cy="38" r="32" fill="none" stroke="url(#g1)" stroke-width="1.4" stroke-dasharray="4 6"/>
-          <circle cx="38" cy="6" r="3" fill="#22e8ff"/>
-        </g>
-        <g class="ring ring--rev">
-          <circle cx="38" cy="38" r="24" fill="none" stroke="url(#g2)" stroke-width="1.2" stroke-dasharray="2 5"/>
-          <circle cx="62" cy="38" r="2.5" fill="#ff3ec9"/>
-        </g>
-        <polygon class="core" points="38,20 53,29 53,47 38,56 23,47 23,29" fill="rgba(109,60,240,0.25)" stroke="#22e8ff" stroke-width="1.6"/>
-        <path d="M31 38l5 5 10-11" fill="none" stroke="#f3f6ff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
-        <defs>
-          <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#22e8ff"/><stop offset="1" stop-color="#6d3cf0"/></linearGradient>
-          <linearGradient id="g2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff3ec9"/><stop offset="1" stop-color="#ff8a4c"/></linearGradient>
-        </defs>
-      </svg>
-    </div>
-
     <header class="hero">
       <div class="eyebrow">Quality &middot; Innovation &middot; Excellence</div>
       <h1>QA Summit 2026</h1>
-      <h2 class="subtitle">Feedback Registration</h2>
-      <p class="lede">Thank you for participating in QA Summit 2026. Please complete your information before proceeding to the feedback survey.</p>
+      <h2 class="subtitle">Feedback Survey</h2>
+      <p class="lede">Thank you for participating in QA Summit 2026. Your feedback is valuable and will help us improve future events.</p>
+      <span class="time-pill">⏱ Takes about 3–5 minutes</span>
     </header>
 
     <div class="progress-wrap">
       <div class="progress-label">
-        <span class="active">Step 1 · Registration</span>
-        <span>Step 2 · Survey</span>
+        <span>Step 1 · Registration</span>
+        <span class="active">Step 2 · Survey</span>
       </div>
       <div class="progress-track"><div class="progress-fill"></div></div>
     </div>
 
-    <main class="card">
-      <form id="regForm" novalidate>
-        <div class="field" id="field-name">
-          <label for="fullName">Full Name<span class="req">*</span></label>
-          <input type="text" id="fullName" name="fullName" placeholder="Enter your full name" autocomplete="name">
-          <div class="error-msg">Please enter your full name.</div>
+    <form id="surveyForm" novalidate>
+      <!-- SECTION A -->
+      <section class="section-card">
+        <div class="section-head"><span class="section-tag">A</span><h3>Overall Experience</h3></div>
+
+        <div class="question" data-qid="q1" data-type="radio">
+          <div class="q-text">1. Overall, how satisfied were you with QA Summit 2026?<span class="req">*</span></div>
+          <div class="options">
+            <label class="opt"><input type="radio" name="q1" value="Very Satisfied">Very Satisfied</label>
+            <label class="opt"><input type="radio" name="q1" value="Satisfied">Satisfied</label>
+            <label class="opt"><input type="radio" name="q1" value="Neutral">Neutral</label>
+            <label class="opt"><input type="radio" name="q1" value="Dissatisfied">Dissatisfied</label>
+            <label class="opt"><input type="radio" name="q1" value="Very Dissatisfied">Very Dissatisfied</label>
+          </div>
+          <div class="error-msg">Please select an option.</div>
         </div>
 
-        <div class="field" id="field-site">
-          <label for="site">Site<span class="req">*</span></label>
-          <select id="site" name="site">
-            <option value="" disabled selected>Select your site</option>
-            <option value="PN">PN</option>
-            <option value="JO">JO</option>
-            <option value="SW">SW</option>
-          </select>
-          <div class="error-msg">Please select your site.</div>
+        <div class="question" data-qid="q2" data-type="radio">
+          <div class="q-text">2. How would you rate the quality of the summit content and presentations?<span class="req">*</span></div>
+          <div class="options">
+            <label class="opt"><input type="radio" name="q2" value="Excellent">Excellent</label>
+            <label class="opt"><input type="radio" name="q2" value="Good">Good</label>
+            <label class="opt"><input type="radio" name="q2" value="Average">Average</label>
+            <label class="opt"><input type="radio" name="q2" value="Poor">Poor</label>
+            <label class="opt"><input type="radio" name="q2" value="Very Poor">Very Poor</label>
+          </div>
+          <div class="error-msg">Please select an option.</div>
         </div>
 
-        <div class="field" id="field-contact">
-          <label for="contact">Contact Number<span class="req">*</span></label>
-          <input type="tel" id="contact" name="contact" placeholder="e.g. 012-3456789" autocomplete="tel">
-          <div class="error-msg">Please enter a valid contact number (7–15 digits).</div>
+        <div class="question" data-qid="q3" data-type="radio">
+          <div class="q-text">3. How relevant were the topics discussed to your work and professional development?<span class="req">*</span></div>
+          <div class="options">
+            <label class="opt"><input type="radio" name="q3" value="Extremely Relevant">Extremely Relevant</label>
+            <label class="opt"><input type="radio" name="q3" value="Relevant">Relevant</label>
+            <label class="opt"><input type="radio" name="q3" value="Moderately Relevant">Moderately Relevant</label>
+            <label class="opt"><input type="radio" name="q3" value="Slightly Relevant">Slightly Relevant</label>
+            <label class="opt"><input type="radio" name="q3" value="Not Relevant">Not Relevant</label>
+          </div>
+          <div class="error-msg">Please select an option.</div>
+        </div>
+      </section>
+
+      <!-- SECTION B -->
+      <section class="section-card">
+        <div class="section-head"><span class="section-tag">B</span><h3>Speakers &amp; Sessions</h3></div>
+
+        <div class="question" data-qid="q4" data-type="radio">
+          <div class="q-text">4. How would you rate the effectiveness of the speakers/presenters?<span class="req">*</span></div>
+          <div class="options">
+            <label class="opt"><input type="radio" name="q4" value="Excellent">Excellent</label>
+            <label class="opt"><input type="radio" name="q4" value="Good">Good</label>
+            <label class="opt"><input type="radio" name="q4" value="Average">Average</label>
+            <label class="opt"><input type="radio" name="q4" value="Poor">Poor</label>
+            <label class="opt"><input type="radio" name="q4" value="Very Poor">Very Poor</label>
+          </div>
+          <div class="error-msg">Please select an option.</div>
         </div>
 
-        <div class="field" id="field-email">
-          <label for="email">Email Address<span class="req">*</span></label>
-          <input type="email" id="email" name="email" placeholder="you@company.com" autocomplete="email">
-          <div class="error-msg">Please enter a valid email address.</div>
+        <div class="question" data-qid="q5" data-type="text">
+          <div class="q-text">5. Which session did you find most valuable?</div>
+          <input type="text" class="field-input" name="q5" placeholder="Short answer">
         </div>
 
-        <button type="submit" class="submit-btn" id="submitBtn" disabled>
-          <span class="label">
-            <span class="spinner"></span>
-            <span class="label-text" id="btnLabel">Proceed to Survey</span>
-          </span>
+        <div class="question" data-qid="q6" data-type="text">
+          <div class="q-text">6. What topics would you like to see included in future QA Summits?</div>
+          <input type="text" class="field-input" name="q6" placeholder="Short answer">
+        </div>
+      </section>
+
+      <!-- SECTION C -->
+      <section class="section-card">
+        <div class="section-head"><span class="section-tag">C</span><h3>Event Organization</h3></div>
+
+        <div class="question" data-qid="q7" data-type="radio">
+          <div class="q-text">7. How satisfied were you with the event organization and logistics?<span class="req">*</span></div>
+          <div class="options">
+            <label class="opt"><input type="radio" name="q7" value="Very Satisfied">Very Satisfied</label>
+            <label class="opt"><input type="radio" name="q7" value="Satisfied">Satisfied</label>
+            <label class="opt"><input type="radio" name="q7" value="Neutral">Neutral</label>
+            <label class="opt"><input type="radio" name="q7" value="Dissatisfied">Dissatisfied</label>
+            <label class="opt"><input type="radio" name="q7" value="Very Dissatisfied">Very Dissatisfied</label>
+          </div>
+          <div class="error-msg">Please select an option.</div>
+        </div>
+
+        <div class="question" data-qid="q8" data-type="matrix">
+          <div class="q-text">8. Please rate the following aspects:<span class="req">*</span></div>
+          <div class="matrix-wrap">
+            <table class="matrix">
+              <thead>
+                <tr><th style="text-align:left; padding-left:12px;">Aspect</th><th>Excellent</th><th>Good</th><th>Average</th><th>Poor</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th>Registration Process</th>
+                  <td><input type="radio" name="q8_registration" value="Excellent"></td>
+                  <td><input type="radio" name="q8_registration" value="Good"></td>
+                  <td><input type="radio" name="q8_registration" value="Average"></td>
+                  <td><input type="radio" name="q8_registration" value="Poor"></td>
+                </tr>
+                <tr>
+                  <th>Venue &amp; Facilities</th>
+                  <td><input type="radio" name="q8_venue" value="Excellent"></td>
+                  <td><input type="radio" name="q8_venue" value="Good"></td>
+                  <td><input type="radio" name="q8_venue" value="Average"></td>
+                  <td><input type="radio" name="q8_venue" value="Poor"></td>
+                </tr>
+                <tr>
+                  <th>Event Schedule</th>
+                  <td><input type="radio" name="q8_schedule" value="Excellent"></td>
+                  <td><input type="radio" name="q8_schedule" value="Good"></td>
+                  <td><input type="radio" name="q8_schedule" value="Average"></td>
+                  <td><input type="radio" name="q8_schedule" value="Poor"></td>
+                </tr>
+                <tr>
+                  <th>Food &amp; Refreshments</th>
+                  <td><input type="radio" name="q8_food" value="Excellent"></td>
+                  <td><input type="radio" name="q8_food" value="Good"></td>
+                  <td><input type="radio" name="q8_food" value="Average"></td>
+                  <td><input type="radio" name="q8_food" value="Poor"></td>
+                </tr>
+                <tr>
+                  <th>Communication &amp; Information</th>
+                  <td><input type="radio" name="q8_communication" value="Excellent"></td>
+                  <td><input type="radio" name="q8_communication" value="Good"></td>
+                  <td><input type="radio" name="q8_communication" value="Average"></td>
+                  <td><input type="radio" name="q8_communication" value="Poor"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="error-msg">Please rate every aspect listed.</div>
+        </div>
+      </section>
+
+      <!-- SECTION D -->
+      <section class="section-card">
+        <div class="section-head"><span class="section-tag">D</span><h3>Impact &amp; Recommendation</h3></div>
+
+        <div class="question" data-qid="q9" data-type="radio">
+          <div class="q-text">9. Did the summit enhance your knowledge of Quality Assurance practices?<span class="req">*</span></div>
+          <div class="options">
+            <label class="opt"><input type="radio" name="q9" value="Significantly">Significantly</label>
+            <label class="opt"><input type="radio" name="q9" value="Somewhat">Somewhat</label>
+            <label class="opt"><input type="radio" name="q9" value="Neutral">Neutral</label>
+            <label class="opt"><input type="radio" name="q9" value="Very Little">Very Little</label>
+            <label class="opt"><input type="radio" name="q9" value="Not at All">Not at All</label>
+          </div>
+          <div class="error-msg">Please select an option.</div>
+        </div>
+
+        <div class="question" data-qid="q10" data-type="nps">
+          <div class="q-text">10. How likely are you to recommend future QA Summit events to your colleagues?<span class="req">*</span></div>
+          <div class="nps-row" id="npsRow"></div>
+          <div class="nps-scale-labels"><span>1 · Not Likely</span><span>10 · Extremely Likely</span></div>
+          <div class="error-msg">Please select a score from 1–10.</div>
+        </div>
+      </section>
+
+      <!-- SECTION E -->
+      <section class="section-card">
+        <div class="section-head"><span class="section-tag">E</span><h3>Open Feedback</h3></div>
+
+        <div class="question" data-qid="q11" data-type="textarea">
+          <div class="q-text">11. What did you enjoy most about QA Summit 2026?<span class="req">*</span></div>
+          <textarea class="field-textarea" name="q11" placeholder="Long answer"></textarea>
+          <div class="error-msg">Please share a few words on this.</div>
+        </div>
+
+        <div class="question" data-qid="q12" data-type="textarea">
+          <div class="q-text">12. What can we improve for future QA Summit events?<span class="req">*</span></div>
+          <textarea class="field-textarea" name="q12" placeholder="Long answer"></textarea>
+          <div class="error-msg">Please share a few words on this.</div>
+        </div>
+
+        <div class="question" data-qid="q13" data-type="textarea">
+          <div class="q-text">13. Any additional comments or suggestions?</div>
+          <div class="q-hint">Optional</div>
+          <textarea class="field-textarea" name="q13" placeholder="Optional"></textarea>
+        </div>
+      </section>
+
+      <div class="submit-wrap">
+        <button type="submit" class="submit-btn" id="submitBtn">
+          <span class="spinner"></span><span id="btnLabel">Submit Feedback</span>
         </button>
-      </form>
-
-      <div class="success-panel" id="successPanel">
-        <div class="success-icon">
-          <svg viewBox="0 0 24 24" fill="none"><path d="M4 12.5l5 5L20 6.5" stroke="#33f2b0" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-        <h3>Thank you! Your registration has been recorded.</h3>
-        <p>We're taking you to the QA Summit 2026 feedback survey.</p>
-        <div class="redirect-note" id="redirectNote">Redirecting to Survey...</div>
       </div>
-    </main>
+    </form>
 
-    <footer class="foot">QA Summit 2026 &middot; Registration is required once per participant</footer>
+    <div class="closing-panel" id="closingPanel">
+      <div class="closing-icon">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M4 12.5l5 5L20 6.5" stroke="#33f2b0" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <h2>Thank you for your feedback! 🚀</h2>
+      <p>We appreciate your participation and look forward to seeing you at future QA events.</p>
+    </div>
+
+    <footer class="foot">QA Summit 2026 &middot; Feedback Survey</footer>
   </div>
 
 <script>
 (function initParticles(){
   const wrap = document.getElementById('particles');
-  for (let i = 0; i < 34; i++){
+  for (let i = 0; i < 30; i++){
     const p = document.createElement('div');
     p.className = 'particle';
     const size = Math.random() * 3 + 1.5;
@@ -324,98 +453,149 @@
   }
 })();
 
-const form = document.getElementById('regForm');
-const submitBtn = document.getElementById('submitBtn');
-const btnLabel = document.getElementById('btnLabel');
-const successPanel = document.getElementById('successPanel');
-const redirectNote = document.getElementById('redirectNote');
-
-const fields = {
-  fullName: { el: document.getElementById('fullName'), wrap: document.getElementById('field-name') },
-  site:     { el: document.getElementById('site'),     wrap: document.getElementById('field-site') },
-  contact:  { el: document.getElementById('contact'),  wrap: document.getElementById('field-contact') },
-  email:    { el: document.getElementById('email'),    wrap: document.getElementById('field-email') },
+/* Extracted Prefill Parameters passed from register.html */
+const urlParams = new URLSearchParams(window.location.search);
+const prefill = {
+  fullName: urlParams.get('name')  || '',
+  site:     urlParams.get('site')  || '',
+  phone:    urlParams.get('phone') || '',
+  email:    urlParams.get('email') || ''
 };
 
-const registrationData = { fullName: '', site: '', contact: '', email: '' };
-
-function isValidEmail(val){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val.trim()); }
-function isValidContact(val){ return val.replace(/\D/g, '').length >= 7 && val.replace(/\D/g, '').length <= 15; }
-
-function validateField(key){
-  const { el, wrap } = fields[key];
-  const value = el.value.trim();
-  let valid = true;
-
-  if (key === 'fullName') valid = value.length >= 2;
-  if (key === 'site')     valid = value !== '';
-  if (key === 'contact')  valid = isValidContact(value);
-  if (key === 'email')    valid = isValidEmail(value);
-
-  wrap.classList.toggle('invalid', value !== '' ? !valid : false);
-  wrap.classList.toggle('valid', valid && value !== '');
-  return valid && value !== '';
+const npsRow = document.getElementById('npsRow');
+for (let i = 1; i <= 10; i++){
+  const btn = document.createElement('div');
+  btn.className = 'nps-opt';
+  btn.textContent = i;
+  btn.dataset.value = i;
+  npsRow.appendChild(btn);
 }
-
-function refreshSubmitState(){
-  const allValid = Object.keys(fields).every(key => {
-    const value = fields[key].el.value.trim();
-    if (value === '') return false;
-    if (key === 'contact') return isValidContact(value);
-    if (key === 'email')   return isValidEmail(value);
-    return true;
-  });
-  submitBtn.disabled = !allValid;
-}
-
-Object.keys(fields).forEach(key => {
-  const { el } = fields[key];
-  el.addEventListener('input', () => { validateField(key); refreshSubmitState(); });
-  el.addEventListener('blur',  () => { validateField(key); });
-  el.addEventListener('change',() => { validateField(key); refreshSubmitState(); });
+let npsValue = null;
+npsRow.addEventListener('click', (e) => {
+  const target = e.target.closest('.nps-opt');
+  if (!target) return;
+  [...npsRow.children].forEach(el => el.classList.remove('checked'));
+  target.classList.add('checked');
+  npsValue = target.dataset.value;
+  clearQuestionError('q10');
 });
+
+document.querySelectorAll('.opt').forEach(opt => {
+  const input = opt.querySelector('input');
+  input.addEventListener('change', () => {
+    document.querySelectorAll(`input[name="${input.name}"]`).forEach(sibling => {
+      sibling.closest('.opt').classList.toggle('checked', sibling.checked);
+    });
+    const q = opt.closest('.question');
+    if (q) clearQuestionError(q.dataset.qid);
+  });
+});
+
+function clearQuestionError(qid){
+  const q = document.querySelector(`.question[data-qid="${qid}"]`);
+  if (q) q.classList.remove('invalid');
+}
+
+const REQUIRED_RADIO = ['q1','q2','q3','q4','q7','q9'];
+const REQUIRED_TEXTAREA = ['q11','q12'];
+const MATRIX_ROWS = ['q8_registration','q8_venue','q8_schedule','q8_food','q8_communication'];
+
+function validateForm(){
+  let allValid = true;
+
+  REQUIRED_RADIO.forEach(name => {
+    const checked = document.querySelector(`input[name="${name}"]:checked`);
+    const q = document.querySelector(`.question[data-qid="${name}"]`);
+    if (!checked){ q.classList.add('invalid'); allValid = false; }
+    else { q.classList.remove('invalid'); }
+  });
+
+  const q10 = document.querySelector('.question[data-qid="q10"]');
+  if (!npsValue){ q10.classList.add('invalid'); allValid = false; }
+  else { q10.classList.remove('invalid'); }
+
+  const q8 = document.querySelector('.question[data-qid="q8"]');
+  const matrixComplete = MATRIX_ROWS.every(name => document.querySelector(`input[name="${name}"]:checked`));
+  if (!matrixComplete){ q8.classList.add('invalid'); allValid = false; }
+  else { q8.classList.remove('invalid'); }
+
+  REQUIRED_TEXTAREA.forEach(name => {
+    const el = document.querySelector(`textarea[name="${name}"]`);
+    const q = document.querySelector(`.question[data-qid="${name}"]`);
+    if (!el.value.trim()){ q.classList.add('invalid'); allValid = false; }
+    else { q.classList.remove('invalid'); }
+  });
+
+  return allValid;
+}
+
+function collectSurveyData(){
+  return {
+    name: prefill.fullName,
+    site: prefill.site,
+    phone: prefill.phone,
+    email: prefill.email,
+    q1: document.querySelector('input[name="q1"]:checked')?.value || '',
+    q2: document.querySelector('input[name="q2"]:checked')?.value || '',
+    q3: document.querySelector('input[name="q3"]:checked')?.value || '',
+    q4: document.querySelector('input[name="q4"]:checked')?.value || '',
+    q5: document.querySelector('input[name="q5"]').value.trim(),
+    q6: document.querySelector('input[name="q6"]').value.trim(),
+    q7: document.querySelector('input[name="q7"]:checked')?.value || '',
+    q8a: document.querySelector('input[name="q8_registration"]:checked')?.value || '',
+    q8b: document.querySelector('input[name="q8_venue"]:checked')?.value || '',
+    q8c: document.querySelector('input[name="q8_schedule"]:checked')?.value || '',
+    q8d: document.querySelector('input[name="q8_food"]:checked')?.value || '',
+    q8e: document.querySelector('input[name="q8_communication"]:checked')?.value || '',
+    q9: document.querySelector('input[name="q9"]:checked')?.value || '',
+    q10: npsValue,
+    q11: document.querySelector('textarea[name="q11"]').value.trim(),
+    q12: document.querySelector('textarea[name="q12"]').value.trim(),
+    q13: document.querySelector('textarea[name="q13"]').value.trim()
+  };
+}
+
+const form = document.getElementById('surveyForm');
+const submitBtn = document.getElementById('submitBtn');
+const btnLabel = document.getElementById('btnLabel');
+const closingPanel = document.getElementById('closingPanel');
+
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyYhQnEqLmmFw8UdVnN0y704FIjc-nUTpijFwZ7te_EDQf_lA6DhYOInPEgdG4OZOI_mg/exec';
 
 form.addEventListener('submit', function(e){
   e.preventDefault();
 
-  registrationData.fullName = fields.fullName.el.value.trim();
-  registrationData.site     = fields.site.el.value;
-  registrationData.contact  = fields.contact.el.value.trim();
-  registrationData.email    = fields.email.el.value.trim();
+  if (!validateForm()){
+    const firstInvalid = document.querySelector('.question.invalid');
+    if (firstInvalid) firstInvalid.scrollIntoView({ behavior:'smooth', block:'center' });
+    return;
+  }
+
+  const surveyData = collectSurveyData();
 
   submitBtn.classList.add('loading');
   submitBtn.disabled = true;
   btnLabel.textContent = 'Submitting...';
 
-  setTimeout(() => {
+  fetch(SCRIPT_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(surveyData)
+  })
+  .then(() => {
     form.style.display = 'none';
-    successPanel.classList.add('show');
-
-    let dots = 0;
-    const dotTimer = setInterval(() => {
-      dots = (dots + 1) % 4;
-      redirectNote.textContent = 'Redirecting to Survey' + '.'.repeat(dots);
-    }, 350);
-
-    setTimeout(() => {
-      clearInterval(dotTimer);
-      proceedToSurvey();
-    }, 1800);
-  }, 600);
-});
-
-function proceedToSurvey(){
-  const SURVEY_URL = "qa-summit-2026-survey.html"; // Target Survey HTML page
-
-  const params = new URLSearchParams({
-    name:  registrationData.fullName,
-    site:  registrationData.site,
-    phone: registrationData.contact,
-    email: registrationData.email
+    closingPanel.classList.add('show');
+    closingPanel.scrollIntoView({ behavior:'smooth', block:'start' });
+  })
+  .catch(err => {
+    console.error('Error submitting survey:', err);
+    alert('There was an issue submitting your feedback. Please try again.');
+    submitBtn.classList.remove('loading');
+    submitBtn.disabled = false;
+    btnLabel.textContent = 'Submit Feedback';
   });
-
-  window.location.href = `${SURVEY_URL}?${params.toString()}`;
-}
+});
 </script>
 </body>
 </html>
