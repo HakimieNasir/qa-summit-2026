@@ -4,6 +4,21 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>QA Summit 2026 — Feedback Registration</title>
+
+<!--
+  =====================================================================
+  QA SUMMIT 2026 — FEEDBACK REGISTRATION GATE
+  ---------------------------------------------------------------------
+  Single-file HTML/CSS/JS. No external frameworks.
+  Purpose: capture attendee info, validate it, then hand off to the
+  external post-event survey.
+
+  INTEGRATION POINTS (search these tags to wire up the real system):
+    [INTEGRATION: SURVEY_URL]      — the real survey link
+    [INTEGRATION: SUBMIT_ENDPOINT] — where to POST registration data
+  =====================================================================
+-->
+
 <style>
   :root{
     --navy-950:      #060a1a;
@@ -443,6 +458,7 @@
   </div>
 
   <div class="page">
+
     <div class="badge" aria-hidden="true">
       <svg viewBox="0 0 76 76">
         <g class="ring">
@@ -479,8 +495,8 @@
 
     <div class="progress-wrap">
       <div class="progress-label">
-        <span class="active">Step 1 · Registration</span>
-        <span>Step 2 · Survey</span>
+        <span class="active">Step 1 &middot; Registration</span>
+        <span>Step 2 &middot; Survey</span>
       </div>
       <div class="progress-track">
         <div class="progress-fill"></div>
@@ -488,7 +504,9 @@
     </div>
 
     <main class="card">
+
       <form id="regForm" novalidate>
+
         <div class="field" id="field-name">
           <label for="fullName">Full Name<span class="req">*</span></label>
           <input type="text" id="fullName" name="fullName" placeholder="Enter your full name" autocomplete="name">
@@ -524,6 +542,7 @@
             <span class="label-text" id="btnLabel">Proceed to Survey</span>
           </span>
         </button>
+
       </form>
 
       <div class="success-panel" id="successPanel">
@@ -536,12 +555,16 @@
         <p>We're taking you to the QA Summit 2026 feedback survey.</p>
         <div class="redirect-note" id="redirectNote">Redirecting to Survey...</div>
       </div>
+
     </main>
 
     <footer class="foot">QA Summit 2026 &middot; Registration is required once per participant</footer>
   </div>
 
 <script>
+/* =====================================================================
+   FLOATING PARTICLES
+   ===================================================================== */
 (function initParticles(){
   const wrap = document.getElementById('particles');
   const COUNT = 34;
@@ -560,7 +583,10 @@
   }
 })();
 
-const form        = document.getElementById('regForm');
+/* =====================================================================
+   FORM STATE + VALIDATION
+   ===================================================================== */
+const form         = document.getElementById('regForm');
 const submitBtn    = document.getElementById('submitBtn');
 const btnLabel     = document.getElementById('btnLabel');
 const successPanel = document.getElementById('successPanel');
@@ -573,49 +599,45 @@ const fields = {
   email:    { el: document.getElementById('email'),    wrap: document.getElementById('field-email') },
 };
 
+/* FIX: registrationData is defined as a plain object — no stray fetch block below */
 const registrationData = {
   fullName: '',
   site: '',
   contact: '',
-  email: ''
+  email: '',
+  submittedAt: null
 };
 
 function isValidEmail(value){
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
 }
-
 function isValidContact(value){
   const digits = value.replace(/\D/g, '');
   return digits.length >= 7 && digits.length <= 15;
 }
 
-// Single source of truth for single field validity
-function isFieldValid(key){
-  const value = fields[key].el.value.trim();
-  if (!value) return false;
-  if (key === 'fullName') return value.length >= 2;
-  if (key === 'site')     return value !== '';
-  if (key === 'contact')  return isValidContact(value);
-  if (key === 'email')    return isValidEmail(value);
-  return true;
-}
-
 function validateField(key){
   const { el, wrap } = fields[key];
   const value = el.value.trim();
-  const valid = isFieldValid(key);
+  let valid = true;
+
+  if (key === 'fullName') valid = value.length >= 2;
+  if (key === 'site')     valid = value !== '';
+  if (key === 'contact')  valid = isValidContact(value);
+  if (key === 'email')    valid = isValidEmail(value);
 
   wrap.classList.toggle('invalid', value !== '' ? !valid : false);
   wrap.classList.toggle('valid', valid && value !== '');
 
-  return valid;
+  return valid && value !== '';
 }
 
 function validateAll(showErrors){
   let allValid = true;
   Object.keys(fields).forEach(key => {
+    const value = fields[key].el.value.trim();
     const valid = validateField(key);
-    if (showErrors && !valid) {
+    if (showErrors && value === '') {
       fields[key].wrap.classList.add('invalid');
     }
     if (!valid) allValid = false;
@@ -624,65 +646,83 @@ function validateAll(showErrors){
 }
 
 function refreshSubmitState(){
-  const allValid = Object.keys(fields).every(key => isFieldValid(key));
+  const allValid = Object.keys(fields).every(key => {
+    const value = fields[key].el.value.trim();
+    if (value === '') return false;
+    if (key === 'contact') return isValidContact(value);
+    if (key === 'email')   return isValidEmail(value);
+    return true;
+  });
   submitBtn.disabled = !allValid;
 }
 
-// Attach event listeners to all inputs
+/* Wire up all fields — input + change covers both text inputs and <select> */
 Object.keys(fields).forEach(key => {
   const { el } = fields[key];
-  el.addEventListener('input', () => { validateField(key); refreshSubmitState(); });
-  el.addEventListener('blur',  () => { validateField(key); });
-  el.addEventListener('change',() => { validateField(key); refreshSubmitState(); });
+  el.addEventListener('input',  () => { validateField(key); refreshSubmitState(); });
+  el.addEventListener('blur',   () => { validateField(key); });
+  el.addEventListener('change', () => { validateField(key); refreshSubmitState(); });
 });
 
-// Run an initial check on load in case fields are autofilled
-refreshSubmitState();
-
+/* =====================================================================
+   SUBMIT HANDLER
+   ===================================================================== */
 form.addEventListener('submit', function(e){
   e.preventDefault();
 
   const allValid = validateAll(true);
   if (!allValid) return;
 
-  registrationData.fullName = fields.fullName.el.value.trim();
-  registrationData.site     = fields.site.el.value;
-  registrationData.contact  = fields.contact.el.value.trim();
-  registrationData.email    = fields.email.el.value.trim();
+  /* Save form data */
+  registrationData.fullName    = fields.fullName.el.value.trim();
+  registrationData.site        = fields.site.el.value;
+  registrationData.contact     = fields.contact.el.value.trim();
+  registrationData.email       = fields.email.el.value.trim();
+  registrationData.submittedAt = new Date().toISOString();
+
+  /* NOTE: We do NOT write to the Google Sheet here. Registration data is
+     carried forward to the survey page via URL params, and the sheet row
+     is written ONCE — when the survey is submitted — containing BOTH the
+     registration fields and the survey answers together. This avoids
+     duplicate/incomplete rows in the sheet. */
 
   submitBtn.classList.add('loading');
   submitBtn.disabled = true;
   btnLabel.textContent = 'Submitting...';
 
-  setTimeout(() => {
-    form.style.display = 'none';
-    successPanel.classList.add('show');
-
-    let dots = 0;
-    const dotTimer = setInterval(() => {
-      dots = (dots + 1) % 4;
-      redirectNote.textContent = 'Redirecting to Survey' + '.'.repeat(dots);
-    }, 350);
-
-    setTimeout(() => {
-      clearInterval(dotTimer);
-      proceedToSurvey();
-    }, 1500);
-  }, 600);
+  proceedToSuccess();
 });
 
+function proceedToSuccess(){
+  form.style.display = 'none';
+  successPanel.classList.add('show');
+
+  let dots = 0;
+  const dotTimer = setInterval(() => {
+    dots = (dots + 1) % 4;
+    redirectNote.textContent = 'Redirecting to Survey' + '.'.repeat(dots);
+  }, 350);
+
+  setTimeout(() => {
+    clearInterval(dotTimer);
+    proceedToSurvey();
+  }, 2000);
+}
+
 function proceedToSurvey(){
+  /* [INTEGRATION: SURVEY_URL] — replace with the real QA Summit 2026 survey link */
   const SURVEY_URL = "https://hakimienasir.github.io/qa-summit-2026/qa-summit-2026-survey.html";
 
-  // Pass ALL 4 registration values into URL params
+  /* Carry the registration data forward via URL params so the survey
+     page can read it and include it in the single sheet row it saves. */
   const params = new URLSearchParams({
-    name: registrationData.fullName,
-    site: registrationData.site,
+    name:    registrationData.fullName,
+    site:    registrationData.site,
     contact: registrationData.contact,
-    email: registrationData.email
+    email:   registrationData.email
   });
 
-  window.location.href = `${SURVEY_URL}?${params.toString()}`;
+  window.location.href = SURVEY_URL + "?" + params.toString();
 }
 </script>
 </body>
