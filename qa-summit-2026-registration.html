@@ -4,28 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>QA Summit 2026 — Feedback Registration</title>
-
-<!--
-  =====================================================================
-  QA SUMMIT 2026 — FEEDBACK REGISTRATION GATE
-  ---------------------------------------------------------------------
-  Single-file HTML/CSS/JS. No external frameworks.
-  Purpose: capture attendee info, validate it, then hand off to the
-  external post-event survey.
-
-  INTEGRATION POINTS (search these tags to wire up the real system):
-    [INTEGRATION: SURVEY_URL]      — the real survey link
-    [INTEGRATION: SUBMIT_ENDPOINT] — where to POST registration data
-  =====================================================================
--->
-
 <style>
-  /* =================================================================
-     DESIGN TOKENS
-     A "quality signal" palette: deep space navy grounds the page,
-     a sunset gradient (magenta → orange) marks the horizon line,
-     and cyan/blue read as the "digital / AI" layer on top of it.
-     ================================================================= */
   :root{
     --navy-950:      #060a1a;
     --navy-900:      #0a1230;
@@ -70,10 +49,6 @@
     overflow-x:hidden;
   }
 
-  /* =================================================================
-     BACKGROUND SCENE — sunset coastal skyline + circuit grid + particles
-     Purely decorative, generated with CSS/SVG only (no image assets).
-     ================================================================= */
   .scene{
     position: fixed;
     inset: 0;
@@ -84,7 +59,6 @@
       linear-gradient(180deg, var(--navy-950) 0%, #101a44 45%, #2a1240 75%, #3a1030 100%);
   }
 
-  /* horizon glow — the "sunset" */
   .horizon-glow{
     position:absolute;
     left:50%; top:58%;
@@ -99,7 +73,6 @@
     50%{ opacity:1; }
   }
 
-  /* skyline silhouette */
   .skyline{
     position:absolute;
     left:0; right:0; bottom:0;
@@ -121,7 +94,6 @@
     mix-blend-mode: screen;
   }
 
-  /* faint circuit-line texture, layered over everything */
   .circuits{
     position:absolute; inset:0;
     opacity:.25;
@@ -138,7 +110,6 @@
     to{ background-position: 128px 128px, 128px 128px; }
   }
 
-  /* floating particles */
   .particles{
     position:absolute; inset:0;
     pointer-events:none;
@@ -157,9 +128,6 @@
     100%{ transform: translateY(-110vh) translateX(var(--drift,20px)); opacity:0; }
   }
 
-  /* =================================================================
-     LAYOUT
-     ================================================================= */
   .page{
     position:relative;
     z-index:1;
@@ -171,8 +139,6 @@
     padding: 40px 20px;
   }
 
-  /* signature element: rotating "quality node" ring — a hexagonal
-     nucleus with orbiting nodes, standing in for AI + QA precision */
   .badge{
     position:relative;
     width:76px; height:76px;
@@ -230,7 +196,6 @@
     line-height: 1.6;
   }
 
-  /* progress indicator */
   .progress-wrap{
     width: 100%;
     max-width: 420px;
@@ -255,7 +220,7 @@
   }
   .progress-fill{
     height:100%;
-    width: 50%; /* step 1 of 2 */
+    width: 50%;
     border-radius: 999px;
     background: linear-gradient(90deg, var(--purple-600), var(--cyan-400));
     box-shadow: 0 0 12px var(--cyan-400);
@@ -267,9 +232,6 @@
     50%{ filter:brightness(1.35); }
   }
 
-  /* =================================================================
-     GLASS CARD / FORM
-     ================================================================= */
   .card{
     position:relative;
     width:100%;
@@ -292,7 +254,6 @@
     to{ opacity:1; transform: translateY(0) scale(1); }
   }
   .card::before{
-    /* neon edge sweep */
     content:"";
     position:absolute; inset:-1px;
     border-radius: inherit;
@@ -376,7 +337,6 @@
   .field.invalid .error-msg{ display:flex; }
   .error-msg::before{ content:"⚠"; font-size:12px; }
 
-  /* submit button */
   .submit-btn{
     width:100%;
     margin-top: 8px;
@@ -409,7 +369,6 @@
 
   .submit-btn .label{ display:inline-flex; align-items:center; gap:10px; }
 
-  /* spinner (shown while "loading") */
   .spinner{
     width:16px; height:16px;
     border-radius:50%;
@@ -421,7 +380,6 @@
   .submit-btn.loading .spinner{ display:inline-block; }
   .submit-btn.loading .label-text{ opacity:.85; }
 
-  /* success overlay */
   .success-panel{
     display:none;
     text-align:center;
@@ -465,7 +423,6 @@
     letter-spacing:.02em;
   }
 
-  /* reduced motion */
   @media (prefers-reduced-motion: reduce){
     *{ animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
   }
@@ -478,7 +435,6 @@
 </head>
 <body>
 
-  <!-- ============================ BACKGROUND SCENE ============================ -->
   <div class="scene" aria-hidden="true">
     <div class="horizon-glow"></div>
     <div class="circuits"></div>
@@ -486,10 +442,7 @@
     <div class="particles" id="particles"></div>
   </div>
 
-  <!-- ============================== PAGE CONTENT =============================== -->
   <div class="page">
-
-    <!-- signature badge: orbiting quality nodes -->
     <div class="badge" aria-hidden="true">
       <svg viewBox="0 0 76 76">
         <g class="ring">
@@ -524,7 +477,6 @@
       <p class="lede">Thank you for participating in QA Summit 2026. Please complete your information before proceeding to the feedback survey.</p>
     </header>
 
-    <!-- progress indicator -->
     <div class="progress-wrap">
       <div class="progress-label">
         <span class="active">Step 1 · Registration</span>
@@ -535,11 +487,8 @@
       </div>
     </div>
 
-    <!-- ================================ FORM CARD ================================ -->
     <main class="card">
-
       <form id="regForm" novalidate>
-
         <div class="field" id="field-name">
           <label for="fullName">Full Name<span class="req">*</span></label>
           <input type="text" id="fullName" name="fullName" placeholder="Enter your full name" autocomplete="name">
@@ -575,10 +524,8 @@
             <span class="label-text" id="btnLabel">Proceed to Survey</span>
           </span>
         </button>
-
       </form>
 
-      <!-- success / redirecting state (hidden until submit) -->
       <div class="success-panel" id="successPanel">
         <div class="success-icon">
           <svg viewBox="0 0 24 24" fill="none">
@@ -589,16 +536,12 @@
         <p>We're taking you to the QA Summit 2026 feedback survey.</p>
         <div class="redirect-note" id="redirectNote">Redirecting to Survey...</div>
       </div>
-
     </main>
 
     <footer class="foot">QA Summit 2026 &middot; Registration is required once per participant</footer>
   </div>
 
 <script>
-/* =====================================================================
-   FLOATING PARTICLES — purely decorative, ambient background motion
-   ===================================================================== */
 (function initParticles(){
   const wrap = document.getElementById('particles');
   const COUNT = 34;
@@ -617,9 +560,6 @@
   }
 })();
 
-/* =====================================================================
-   FORM STATE + VALIDATION
-   ===================================================================== */
 const form        = document.getElementById('regForm');
 const submitBtn    = document.getElementById('submitBtn');
 const btnLabel     = document.getElementById('btnLabel');
@@ -633,22 +573,17 @@ const fields = {
   email:    { el: document.getElementById('email'),    wrap: document.getElementById('field-email') },
 };
 
-// JavaScript object that will hold the validated registration data.
-// [INTEGRATION: SUBMIT_ENDPOINT] — this is the payload you would POST
-// to your backend / form service (e.g. fetch('/api/register', {...})).
 const registrationData = {
   fullName: '',
   site: '',
   contact: '',
-  email: '',
-  submittedAt: null
+  email: ''
 };
 
 function isValidEmail(value){
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
 }
 function isValidContact(value){
-  // Accepts digits, spaces, +, -, () — normalized down to 7–15 digits.
   const digits = value.replace(/\D/g, '');
   return digits.length >= 7 && digits.length <= 15;
 }
@@ -700,48 +635,22 @@ Object.keys(fields).forEach(key => {
   el.addEventListener('change',() => { validateField(key); refreshSubmitState(); });
 });
 
-/* =====================================================================
-   SUBMIT HANDLER
-   1. Validate everything
-   2. Save into registrationData
-   3. Simulate submission + show "Redirecting to Survey..." loading state
-   4. Redirect after 2 seconds
-   ===================================================================== */
 form.addEventListener('submit', function(e){
   e.preventDefault();
 
   const allValid = validateAll(true);
   if (!allValid) return;
 
-  // 1) Save form data into the JS object
-  registrationData.fullName   = fields.fullName.el.value.trim();
-  registrationData.site       = fields.site.el.value;
-  registrationData.contact    = fields.contact.el.value.trim();
-  registrationData.email      = fields.email.el.value.trim();
-  registrationData.submittedAt = new Date().toISOString();
+  registrationData.fullName = fields.fullName.el.value.trim();
+  registrationData.site     = fields.site.el.value;
+  registrationData.contact  = fields.contact.el.value.trim();
+  registrationData.email    = fields.email.el.value.trim();
 
-  // [INTEGRATION: SUBMIT_ENDPOINT]
-  // Replace the block below with a real network call, e.g.:
-  //
-  // fetch('https://your-backend.example.com/api/qa-summit-registration', {
-  //   method: 'POST',
-  //   headers: { 'Content-Type': 'application/json' },
-  //   body: JSON.stringify(registrationData)
-  // })
-  //   .then(res => res.json())
-  //   .then(() => proceedToSurvey())
-  //   .catch(() => showSubmissionError());
-  //
-  // For now, submission is simulated locally:
-  console.log('Registration payload (simulated submission):', registrationData);
-
-  // 2) Enter loading state
   submitBtn.classList.add('loading');
   submitBtn.disabled = true;
   btnLabel.textContent = 'Submitting...';
 
   setTimeout(() => {
-    // 3) Show success + redirect message
     form.style.display = 'none';
     successPanel.classList.add('show');
 
@@ -751,51 +660,26 @@ form.addEventListener('submit', function(e){
       redirectNote.textContent = 'Redirecting to Survey' + '.'.repeat(dots);
     }, 350);
 
-    // 4) Redirect after 2 seconds total
     setTimeout(() => {
       clearInterval(dotTimer);
       proceedToSurvey();
-    }, 2000);
-
-  }, 900); // brief simulated network delay before showing the success state
+    }, 1500);
+  }, 600);
 });
 
 function proceedToSurvey(){
-  // =====================================================================
-  // [INTEGRATION: SURVEY_URL]
-  // Replace the placeholder below with the real QA Summit 2026 survey link.
-  // Optionally append registration data as query params for pre-fill,
-  // e.g. `${SURVEY_URL}?name=${encodeURIComponent(registrationData.fullName)}`
-  // =====================================================================
   const SURVEY_URL = "https://hakimienasir.github.io/qa-summit-2026/qa-summit-2026-survey.html";
 
-  window.location.href = SURVEY_URL;
-}
-
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyYhQnEqLmmFw8UdVnN0y704FIjc-nUTpijFwZ7te_EDQf_lA6DhYOInPEgdG4OZOI_mg/exec';
-
-// Send request using text/plain to prevent CORS preflight issues with Apps Script
-  fetch(SCRIPT_URL, {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: {
-      'Content-Type': 'text/plain;charset=utf-8'
-    },
-    body: JSON.stringify(surveyData)
-  })
-  .then(() => {
-    form.style.display = 'none';
-    closingPanel.classList.add('show');
-    closingPanel.scrollIntoView({ behavior:'smooth', block:'start' });
-  })
-  .catch(err => {
-    console.error('Error submitting survey:', err);
-    alert('There was an issue submitting your feedback. Please try again.');
-    submitBtn.classList.remove('loading');
-    submitBtn.disabled = false;
-    btnLabel.textContent = 'Submit Feedback';
+  // Pass ALL 4 registration values into URL params
+  const params = new URLSearchParams({
+    name: registrationData.fullName,
+    site: registrationData.site,
+    contact: registrationData.contact,
+    email: registrationData.email
   });
-});
+
+  window.location.href = `${SURVEY_URL}?${params.toString()}`;
+}
 </script>
 </body>
 </html>
