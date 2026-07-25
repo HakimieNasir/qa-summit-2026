@@ -562,167 +562,215 @@
   </div>
 
 <script>
-/* =====================================================================
-   FLOATING PARTICLES
-   ===================================================================== */
-(function initParticles(){
-  const wrap = document.getElementById('particles');
-  const COUNT = 34;
-  for (let i = 0; i < COUNT; i++){
-    const p = document.createElement('div');
-    p.className = 'particle';
-    const size = Math.random() * 3 + 1.5;
-    p.style.width = size + 'px';
-    p.style.height = size + 'px';
-    p.style.left = Math.random() * 100 + 'vw';
-    p.style.bottom = (Math.random() * -20) + 'vh';
-    p.style.setProperty('--drift', (Math.random() * 80 - 40) + 'px');
-    p.style.animationDuration = (Math.random() * 14 + 10) + 's';
-    p.style.animationDelay = (Math.random() * 14) + 's';
+// ── PASTE YOUR NEW DEPLOYED SCRIPT URL HERE after re-deploying ──
+var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwYboLPGFpim8n2ymOdml_87oes_q_hnqTz0GZCRiX3Z0DQg1gm0FR2IAmlK1XcPXSx/exec';
+
+// ── PARTICLES ──
+(function(){
+  var wrap=document.getElementById('particles');
+  for(var i=0;i<28;i++){
+    var p=document.createElement('div');p.className='particle';
+    var s=Math.random()*3+1.5;
+    p.style.width=s+'px';p.style.height=s+'px';
+    p.style.left=Math.random()*100+'vw';
+    p.style.bottom=(Math.random()*-20)+'vh';
+    p.style.setProperty('--drift',(Math.random()*80-40)+'px');
+    p.style.animationDuration=(Math.random()*14+10)+'s';
+    p.style.animationDelay=(Math.random()*14)+'s';
     wrap.appendChild(p);
   }
 })();
 
-/* =====================================================================
-   FORM STATE + VALIDATION
-   ===================================================================== */
-const form         = document.getElementById('regForm');
-const submitBtn    = document.getElementById('submitBtn');
-const btnLabel     = document.getElementById('btnLabel');
-const successPanel = document.getElementById('successPanel');
-const redirectNote = document.getElementById('redirectNote');
-
-const fields = {
-  fullName: { el: document.getElementById('fullName'), wrap: document.getElementById('field-name') },
-  site:     { el: document.getElementById('site'),     wrap: document.getElementById('field-site') },
-  contact:  { el: document.getElementById('contact'),  wrap: document.getElementById('field-contact') },
-  email:    { el: document.getElementById('email'),    wrap: document.getElementById('field-email') },
+// ── READ REGISTRATION DATA FROM URL PARAMS ──
+var params = new URLSearchParams(window.location.search);
+var registrant = {
+  Name:    decodeURIComponent(params.get('name')    || ''),
+  Site:    decodeURIComponent(params.get('site')    || ''),
+  Contact: decodeURIComponent(params.get('contact') || ''),
+  Email:   decodeURIComponent(params.get('email')   || '')
 };
 
-/* FIX: registrationData is defined as a plain object — no stray fetch block below */
-const registrationData = {
-  fullName: '',
-  site: '',
-  contact: '',
-  email: '',
-  submittedAt: null
-};
+// Show identity chips
+(function(){
+  var bar = document.getElementById('identityBar');
+  [['Name',registrant.Name],['Site',registrant.Site],
+   ['Contact',registrant.Contact],['Email',registrant.Email]]
+  .filter(function(x){ return x[1]; })
+  .forEach(function(x){
+    var c=document.createElement('div'); c.className='id-chip';
+    c.innerHTML='<span class="lbl">'+x[0]+':</span> '+x[1];
+    bar.appendChild(c);
+  });
+})();
 
-function isValidEmail(value){
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
+// ── STAR RATINGS ──
+var ratings = {};
+document.querySelectorAll('.star-row').forEach(function(row){
+  var key = row.dataset.key;
+  ratings[key] = 0;
+  for(var i=1;i<=5;i++){
+    (function(val){
+      var btn=document.createElement('button');
+      btn.type='button';
+      btn.className='star-btn';
+      btn.textContent='★';
+      btn.addEventListener('mouseenter',function(){ highlightStars(row,val); });
+      btn.addEventListener('mouseleave',function(){ highlightStars(row,ratings[key]); });
+      btn.addEventListener('click',function(){
+        ratings[key]=val;
+        highlightStars(row,val);
+        var fid='field-'+row.id.replace('stars-','');
+        var fel=document.getElementById(fid);
+        if(fel) fel.classList.remove('invalid');
+      });
+      row.appendChild(btn);
+    })(i);
+  }
+});
+function highlightStars(row,count){
+  row.querySelectorAll('.star-btn').forEach(function(btn,idx){
+    btn.classList.toggle('active',idx<count);
+  });
 }
-function isValidContact(value){
-  const digits = value.replace(/\D/g, '');
-  return digits.length >= 7 && digits.length <= 15;
-}
 
-function validateField(key){
-  const { el, wrap } = fields[key];
-  const value = el.value.trim();
-  let valid = true;
-
-  if (key === 'fullName') valid = value.length >= 2;
-  if (key === 'site')     valid = value !== '';
-  if (key === 'contact')  valid = isValidContact(value);
-  if (key === 'email')    valid = isValidEmail(value);
-
-  wrap.classList.toggle('invalid', value !== '' ? !valid : false);
-  wrap.classList.toggle('valid', valid && value !== '');
-
-  return valid && value !== '';
-}
-
-function validateAll(showErrors){
-  let allValid = true;
-  Object.keys(fields).forEach(key => {
-    const value = fields[key].el.value.trim();
-    const valid = validateField(key);
-    if (showErrors && value === '') {
-      fields[key].wrap.classList.add('invalid');
+// ── RADIO GROUPS ──
+document.querySelectorAll('.radio-group').forEach(function(group){
+  group.querySelectorAll('.radio-opt').forEach(function(opt){
+    var input=opt.querySelector('input[type="radio"]');
+    function select(){
+      group.querySelectorAll('.radio-opt').forEach(function(o){ o.classList.remove('selected'); });
+      opt.classList.add('selected');
+      var fel=opt.closest('.field');
+      if(fel) fel.classList.remove('invalid');
     }
-    if (!valid) allValid = false;
+    input.addEventListener('change',select);
+    opt.addEventListener('click',function(){ input.checked=true; select(); });
   });
-  return allValid;
-}
-
-function refreshSubmitState(){
-  const allValid = Object.keys(fields).every(key => {
-    const value = fields[key].el.value.trim();
-    if (value === '') return false;
-    if (key === 'contact') return isValidContact(value);
-    if (key === 'email')   return isValidEmail(value);
-    return true;
-  });
-  submitBtn.disabled = !allValid;
-}
-
-/* Wire up all fields — input + change covers both text inputs and <select> */
-Object.keys(fields).forEach(key => {
-  const { el } = fields[key];
-  el.addEventListener('input',  () => { validateField(key); refreshSubmitState(); });
-  el.addEventListener('blur',   () => { validateField(key); });
-  el.addEventListener('change', () => { validateField(key); refreshSubmitState(); });
 });
 
-/* =====================================================================
-   SUBMIT HANDLER
-   ===================================================================== */
-form.addEventListener('submit', function(e){
+// ── CHECKBOX GROUPS ──
+document.querySelectorAll('.check-group').forEach(function(group){
+  group.querySelectorAll('.check-opt').forEach(function(opt){
+    var input=opt.querySelector('input[type="checkbox"]');
+    function toggle(){
+      opt.classList.toggle('checked',input.checked);
+      var fel=opt.closest('.field');
+      if(fel&&group.querySelectorAll('input:checked').length>0)
+        fel.classList.remove('invalid');
+    }
+    input.addEventListener('change',toggle);
+    opt.addEventListener('click',function(e){
+      if(e.target!==input){ input.checked=!input.checked; }
+      toggle();
+    });
+  });
+});
+
+// ── HELPERS ──
+function getRadioValue(name){
+  var c=document.querySelector('input[name="'+name+'"]:checked');
+  return c?c.value:'';
+}
+function getCheckboxValues(groupId){
+  return Array.from(document.querySelectorAll('#'+groupId+' input:checked'))
+    .map(function(c){ return c.value; }).join(', ');
+}
+
+// ── VALIDATION ──
+function validate(){
+  var ok=true;
+  [['OverallRating','field-overall'],
+   ['RecommendRating','field-recommend'],
+   ['SessionQualityRating','field-session'],
+   ['LogisticsRating','field-logistics']]
+  .forEach(function(pair){
+    var el=document.getElementById(pair[1]);
+    if(!ratings[pair[0]]||ratings[pair[0]]===0){
+      el.classList.add('invalid'); ok=false;
+    } else {
+      el.classList.remove('invalid');
+    }
+  });
+  var fmtEl=document.getElementById('field-format');
+  if(!getRadioValue('preferredFormat')){
+    fmtEl.classList.add('invalid'); ok=false;
+  } else {
+    fmtEl.classList.remove('invalid');
+  }
+  var topEl=document.getElementById('field-topics');
+  if(!getCheckboxValues('cg-topics')){
+    topEl.classList.add('invalid'); ok=false;
+  } else {
+    topEl.classList.remove('invalid');
+  }
+  var impEl=document.getElementById('field-improve');
+  if(!document.getElementById('improve').value.trim()){
+    impEl.classList.add('invalid'); ok=false;
+  } else {
+    impEl.classList.remove('invalid');
+  }
+  return ok;
+}
+
+// ── SUBMIT ──
+var submitBtn    = document.getElementById('submitBtn');
+var btnLabel     = document.getElementById('btnLabel');
+var closingPanel = document.getElementById('closingPanel');
+var surveyForm   = document.getElementById('surveyForm');
+
+surveyForm.addEventListener('submit', function(e){
   e.preventDefault();
+  if(!validate()) return;
 
-  const allValid = validateAll(true);
-  if (!allValid) return;
-
-  /* Save form data */
-  registrationData.fullName    = fields.fullName.el.value.trim();
-  registrationData.site        = fields.site.el.value;
-  registrationData.contact     = fields.contact.el.value.trim();
-  registrationData.email       = fields.email.el.value.trim();
-  registrationData.submittedAt = new Date().toISOString();
-
-  /* NOTE: We do NOT write to the Google Sheet here. Registration data is
-     carried forward to the survey page via URL params, and the sheet row
-     is written ONCE — when the survey is submitted — containing BOTH the
-     registration fields and the survey answers together. This avoids
-     duplicate/incomplete rows in the sheet. */
+  // ── Build payload — field names MUST match Apps Script doPost() ──
+  var payload = {
+    fullName:             registrant.Name,
+    site:                 registrant.Site,
+    contact:              registrant.Contact,
+    email:                registrant.Email,
+    overallRating:        String(ratings['OverallRating']        || ''),
+    recommendRating:      String(ratings['RecommendRating']      || ''),
+    sessionQualityRating: String(ratings['SessionQualityRating'] || ''),
+    logisticsRating:      String(ratings['LogisticsRating']      || ''),
+    bestSession:          document.getElementById('bestSession').value.trim(),
+    preferredFormat:      getRadioValue('preferredFormat'),
+    topicsWanted:         getCheckboxValues('cg-topics'),
+    highlight:            document.getElementById('highlight').value.trim(),
+    improvements:         document.getElementById('improve').value.trim()
+  };
 
   submitBtn.classList.add('loading');
   submitBtn.disabled = true;
   btnLabel.textContent = 'Submitting...';
 
-  proceedToSuccess();
+  console.log('Sending payload:', JSON.stringify(payload));
+
+  // ── Primary: fetch POST ──
+  fetch(SCRIPT_URL, {
+    method:  'POST',
+    mode:    'no-cors',           // required for Apps Script
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body:    JSON.stringify(payload)
+  })
+  .then(function(){
+    // no-cors returns opaque response — treat arrival as success
+    showSuccess();
+  })
+  .catch(function(err){
+    console.warn('POST failed, trying GET fallback:', err);
+    // ── Fallback: GET with encoded data ──
+    var fallback = new Image();
+    fallback.onload = fallback.onerror = function(){ showSuccess(); };
+    fallback.src = SCRIPT_URL + '?data=' + encodeURIComponent(JSON.stringify(payload));
+    setTimeout(showSuccess, 4000);   // safety net
+  });
 });
 
-function proceedToSuccess(){
-  form.style.display = 'none';
-  successPanel.classList.add('show');
-
-  let dots = 0;
-  const dotTimer = setInterval(() => {
-    dots = (dots + 1) % 4;
-    redirectNote.textContent = 'Redirecting to Survey' + '.'.repeat(dots);
-  }, 350);
-
-  setTimeout(() => {
-    clearInterval(dotTimer);
-    proceedToSurvey();
-  }, 2000);
-}
-
-function proceedToSurvey(){
-  /* [INTEGRATION: SURVEY_URL] — replace with the real QA Summit 2026 survey link */
-  const SURVEY_URL = "https://hakimienasir.github.io/qa-summit-2026/qa-summit-2026-survey.html";
-
-  /* Carry the registration data forward via URL params so the survey
-     page can read it and include it in the single sheet row it saves. */
-  const params = new URLSearchParams({
-    name:    registrationData.fullName,
-    site:    registrationData.site,
-    contact: registrationData.contact,
-    email:   registrationData.email
-  });
-
-  window.location.href = SURVEY_URL + "?" + params.toString();
+function showSuccess(){
+  if(closingPanel.classList.contains('show')) return;   // prevent double-fire
+  surveyForm.style.display='none';
+  closingPanel.classList.add('show');
+  closingPanel.scrollIntoView({behavior:'smooth',block:'start'});
 }
 </script>
 </body>
