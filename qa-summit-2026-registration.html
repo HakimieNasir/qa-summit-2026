@@ -583,33 +583,39 @@ const registrationData = {
 function isValidEmail(value){
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
 }
+
 function isValidContact(value){
   const digits = value.replace(/\D/g, '');
   return digits.length >= 7 && digits.length <= 15;
 }
 
+// Single source of truth for single field validity
+function isFieldValid(key){
+  const value = fields[key].el.value.trim();
+  if (!value) return false;
+  if (key === 'fullName') return value.length >= 2;
+  if (key === 'site')     return value !== '';
+  if (key === 'contact')  return isValidContact(value);
+  if (key === 'email')    return isValidEmail(value);
+  return true;
+}
+
 function validateField(key){
   const { el, wrap } = fields[key];
   const value = el.value.trim();
-  let valid = true;
-
-  if (key === 'fullName') valid = value.length >= 2;
-  if (key === 'site')     valid = value !== '';
-  if (key === 'contact')  valid = isValidContact(value);
-  if (key === 'email')    valid = isValidEmail(value);
+  const valid = isFieldValid(key);
 
   wrap.classList.toggle('invalid', value !== '' ? !valid : false);
   wrap.classList.toggle('valid', valid && value !== '');
 
-  return valid && value !== '';
+  return valid;
 }
 
 function validateAll(showErrors){
   let allValid = true;
   Object.keys(fields).forEach(key => {
-    const value = fields[key].el.value.trim();
     const valid = validateField(key);
-    if (showErrors && value === '') {
+    if (showErrors && !valid) {
       fields[key].wrap.classList.add('invalid');
     }
     if (!valid) allValid = false;
@@ -618,22 +624,20 @@ function validateAll(showErrors){
 }
 
 function refreshSubmitState(){
-  const allValid = Object.keys(fields).every(key => {
-    const value = fields[key].el.value.trim();
-    if (value === '') return false;
-    if (key === 'contact') return isValidContact(value);
-    if (key === 'email')   return isValidEmail(value);
-    return true;
-  });
+  const allValid = Object.keys(fields).every(key => isFieldValid(key));
   submitBtn.disabled = !allValid;
 }
 
+// Attach event listeners to all inputs
 Object.keys(fields).forEach(key => {
   const { el } = fields[key];
   el.addEventListener('input', () => { validateField(key); refreshSubmitState(); });
   el.addEventListener('blur',  () => { validateField(key); });
   el.addEventListener('change',() => { validateField(key); refreshSubmitState(); });
 });
+
+// Run an initial check on load in case fields are autofilled
+refreshSubmitState();
 
 form.addEventListener('submit', function(e){
   e.preventDefault();
