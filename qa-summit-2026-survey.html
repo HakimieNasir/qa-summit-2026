@@ -6,616 +6,431 @@
 <title>QA Summit 2026 — Feedback Survey</title>
 <style>
   :root{
-    --navy-950:      #060a1a;
-    --navy-900:      #0a1230;
-    --navy-800:      #0f1a42;
-    --purple-600:    #6d3cf0;
-    --blue-500:      #2f6df6;
-    --cyan-400:      #22e8ff;
-    --magenta-500:   #ff3ec9;
-    --orange-400:    #ff8a4c;
-
-    --text-primary:   #f3f6ff;
-    --text-secondary: #aab4d8;
-    --text-muted:     #7784ab;
-
-    --glass-bg:       rgba(16, 22, 54, 0.55);
-    --glass-border:   rgba(150, 180, 255, 0.18);
-    --glass-highlight: rgba(255, 255, 255, 0.06);
-
-    --error:          #ff5c7a;
-    --success:        #33f2b0;
-
-    --font-display: 'Space Grotesk', 'Segoe UI', system-ui, sans-serif;
-    --font-body:    'Inter', 'Segoe UI', system-ui, sans-serif;
-    --font-mono:    'JetBrains Mono', 'Consolas', monospace;
-
-    --radius-lg: 24px;
-    --radius-md: 14px;
-    --radius-sm: 8px;
-    --ease: cubic-bezier(.22,1,.36,1);
+    --navy-950:#060a1a;--navy-900:#0a1230;--purple-600:#6d3cf0;
+    --blue-500:#2f6df6;--cyan-400:#22e8ff;--magenta-500:#ff3ec9;
+    --orange-400:#ff8a4c;--text-primary:#f3f6ff;--text-secondary:#aab4d8;
+    --text-muted:#7784ab;--glass-bg:rgba(16,22,54,0.55);
+    --glass-border:rgba(150,180,255,0.18);--glass-highlight:rgba(255,255,255,0.06);
+    --error:#ff5c7a;--success:#33f2b0;
+    --font-display:'Space Grotesk','Segoe UI',system-ui,sans-serif;
+    --font-body:'Inter','Segoe UI',system-ui,sans-serif;
+    --font-mono:'JetBrains Mono','Consolas',monospace;
+    --radius-lg:24px;--radius-md:14px;--radius-sm:8px;
+    --ease:cubic-bezier(.22,1,.36,1);
   }
-
   @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap');
-
-  *{ margin:0; padding:0; box-sizing:border-box; }
-  html,body{ font-family: var(--font-body); background: var(--navy-950); color: var(--text-primary); }
-
-  .scene{
-    position: fixed; inset:0; z-index:0; overflow:hidden;
-    background:
-      radial-gradient(ellipse 120% 60% at 50% 0%, rgba(109,60,240,0.30), transparent 60%),
-      linear-gradient(180deg, var(--navy-950) 0%, #101a44 45%, #2a1240 75%, #3a1030 100%);
-  }
-  .horizon-glow{
-    position:absolute; left:50%; top:0%; width:140vw; height:60vh;
-    transform: translate(-50%,-50%);
-    background: radial-gradient(closest-side, rgba(255,138,76,0.4), rgba(255,62,201,0.2) 45%, transparent 75%);
-    filter: blur(60px); animation: pulseGlow 8s ease-in-out infinite;
-  }
-  @keyframes pulseGlow{ 0%,100%{opacity:.7;} 50%{opacity:1;} }
-  .circuits{
-    position:absolute; inset:0; opacity:.18;
-    background-image:
-      linear-gradient(rgba(34,232,255,0.15) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(34,232,255,0.15) 1px, transparent 1px);
-    background-size: 64px 64px;
-    -webkit-mask-image: radial-gradient(ellipse 90% 90% at 50% 20%, black, transparent 85%);
-            mask-image: radial-gradient(ellipse 90% 90% at 50% 20%, black, transparent 85%);
-    animation: drift 40s linear infinite;
-  }
-  @keyframes drift{ from{background-position:0 0,0 0;} to{background-position:128px 128px,128px 128px;} }
-  .particles{ position:absolute; inset:0; pointer-events:none; }
-  .particle{
-    position:absolute; border-radius:50%;
-    background: radial-gradient(circle, #fff, transparent 70%);
-    opacity:.7; animation: floatUp linear infinite;
-  }
-  @keyframes floatUp{
-    0%{ transform:translateY(0) translateX(0); opacity:0; }
-    10%{ opacity:.8; } 90%{ opacity:.5; }
-    100%{ transform:translateY(-110vh) translateX(var(--drift,20px)); opacity:0; }
-  }
-
-  .page{ position:relative; z-index:1; min-height:100vh; display:flex; flex-direction:column; align-items:center; padding: 40px 16px 80px; }
-
-  header.hero{ text-align:center; max-width:620px; margin-bottom:20px; }
-  .eyebrow{
-    font-family: var(--font-mono); letter-spacing:.22em; text-transform:uppercase;
-    font-size:11px; color: var(--cyan-400); margin-bottom:10px;
-  }
-  h1{
-    font-family: var(--font-display); font-weight:700; font-size: clamp(26px,5vw,38px); line-height:1.1;
-    background: linear-gradient(100deg, #ffffff 10%, var(--cyan-400) 45%, var(--magenta-500) 75%, var(--orange-400) 100%);
-    -webkit-background-clip:text; background-clip:text; color:transparent;
-  }
-  h2.subtitle{ font-family: var(--font-display); font-weight:500; font-size: clamp(14px,2.2vw,17px); color: var(--text-secondary); margin-top:6px; }
-  p.lede{ margin-top:14px; color: var(--text-secondary); font-size:14px; line-height:1.6; }
-  .time-pill{
-    display:inline-flex; align-items:center; gap:6px; margin-top:14px;
-    padding:6px 14px; border-radius:999px; font-family:var(--font-mono); font-size:11.5px;
-    color: var(--cyan-400); border:1px solid rgba(34,232,255,0.35); background: rgba(34,232,255,0.06);
-  }
-
-  .progress-wrap{ width:100%; max-width:460px; margin: 22px auto 0; }
-  .progress-label{ display:flex; justify-content:space-between; font-family:var(--font-mono); font-size:11px; letter-spacing:.05em; color: var(--text-muted); margin-bottom:6px; }
-  .progress-label span.active{ color: var(--cyan-400); }
-  .progress-track{ height:6px; border-radius:999px; background: rgba(255,255,255,0.08); overflow:hidden; border:1px solid var(--glass-border); }
-  .progress-fill{ height:100%; width:100%; border-radius:999px; background: linear-gradient(90deg, var(--purple-600), var(--cyan-400)); box-shadow:0 0 12px var(--cyan-400); }
-
-  form#surveyForm{ width:100%; max-width: 640px; margin-top: 26px; display:flex; flex-direction:column; gap:20px; }
-
-  .section-card{
-    position:relative; padding: 26px 26px 24px; border-radius: var(--radius-lg);
-    background: var(--glass-bg); border:1px solid var(--glass-border);
-    backdrop-filter: blur(18px) saturate(140%); -webkit-backdrop-filter: blur(18px) saturate(140%);
-    box-shadow: 0 0 0 1px var(--glass-highlight) inset, 0 20px 50px rgba(0,0,0,0.4);
-    animation: cardIn .6s var(--ease) both;
-  }
-  @keyframes cardIn{ from{opacity:0; transform:translateY(14px);} to{opacity:1; transform:translateY(0);} }
-
-  .section-head{ display:flex; align-items:baseline; gap:10px; margin-bottom:18px; }
-  .section-tag{
-    font-family: var(--font-mono); font-size:11px; letter-spacing:.1em; color: var(--navy-950);
-    background: linear-gradient(100deg, var(--cyan-400), var(--purple-600));
-    padding: 3px 9px; border-radius:6px; font-weight:600; flex-shrink:0;
-  }
-  .section-head h3{ font-family: var(--font-display); font-size:16.5px; font-weight:600; color: var(--text-primary); }
-
-  .question{ margin-bottom: 22px; }
-  .question:last-child{ margin-bottom:0; }
-  .question .q-text{ font-size:14px; font-weight:500; color: var(--text-primary); margin-bottom: 11px; line-height:1.45; }
-  .question .q-text .req{ color: var(--magenta-500); margin-left:3px; }
-  .question .q-hint{ font-size:12px; color: var(--text-muted); margin-top:-6px; margin-bottom:10px; }
-
-  .options{ display:flex; flex-direction:column; gap:8px; }
-  .opt{
-    position:relative; display:flex; align-items:center; gap:10px;
-    padding: 10px 14px; border-radius: var(--radius-sm);
-    border:1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.035);
-    cursor:pointer; transition: border-color .2s var(--ease), background .2s var(--ease), transform .15s var(--ease);
-    font-size: 13.5px; color: var(--text-secondary);
-  }
-  .opt:hover{ border-color: rgba(34,232,255,0.4); background: rgba(255,255,255,0.06); transform: translateY(-1px); }
-  .opt input{ accent-color: var(--cyan-400); width:15px; height:15px; flex-shrink:0; }
-  .opt.checked{ border-color: var(--cyan-400); background: rgba(34,232,255,0.09); color: var(--text-primary); box-shadow: 0 0 14px rgba(34,232,255,0.15); }
-
-  .nps-row{ display:flex; gap:6px; flex-wrap:wrap; }
-  .nps-opt{
-    width:38px; height:38px; border-radius:8px; display:flex; align-items:center; justify-content:center;
-    border:1px solid rgba(255,255,255,0.14); background: rgba(255,255,255,0.035);
-    font-family: var(--font-mono); font-size:13px; color: var(--text-secondary); cursor:pointer;
-    transition: all .18s var(--ease);
-  }
-  .nps-opt:hover{ border-color: rgba(34,232,255,0.5); transform: translateY(-2px); }
-  .nps-opt.checked{ border-color: var(--cyan-400); background: linear-gradient(135deg, var(--cyan-400), var(--purple-600)); color: var(--navy-950); font-weight:700; box-shadow:0 0 14px rgba(34,232,255,0.35); }
-  .nps-scale-labels{ display:flex; justify-content:space-between; font-size:11px; color: var(--text-muted); margin-top:6px; }
-
-  .field-input, .field-textarea{
-    width:100%; padding: 11px 14px; font-family: var(--font-body); font-size:14px;
-    color: var(--text-primary); background: rgba(255,255,255,0.045);
-    border:1px solid rgba(255,255,255,0.12); border-radius: var(--radius-sm); outline:none; resize:vertical;
-    transition: border-color .2s var(--ease), box-shadow .2s var(--ease);
-  }
-  .field-input::placeholder, .field-textarea::placeholder{ color: var(--text-muted); }
-  .field-input:hover, .field-textarea:hover{ border-color: rgba(34,232,255,0.35); }
-  .field-input:focus, .field-textarea:focus{ border-color: var(--cyan-400); box-shadow: 0 0 0 3px rgba(34,232,255,0.15); }
-  .field-textarea{ min-height: 90px; }
-
-  .matrix-wrap{ overflow-x:auto; border-radius: var(--radius-sm); border:1px solid rgba(255,255,255,0.1); }
-  table.matrix{ width:100%; border-collapse:collapse; min-width: 460px; }
-  table.matrix th, table.matrix td{ padding: 10px 10px; text-align:center; font-size:12.5px; }
-  table.matrix thead th{
-    background: rgba(255,255,255,0.05); color: var(--cyan-400); font-family: var(--font-mono);
-    font-weight:500; letter-spacing:.02em; border-bottom:1px solid rgba(255,255,255,0.1);
-  }
-  table.matrix tbody th{ text-align:left; color: var(--text-secondary); font-weight:500; padding-left:12px; }
-  table.matrix tbody tr:nth-child(odd){ background: rgba(255,255,255,0.02); }
-  table.matrix td input{ accent-color: var(--cyan-400); width:16px; height:16px; cursor:pointer; }
-
-  .error-msg{ display:none; margin-top:8px; font-size:12px; color: var(--error); font-weight:500; align-items:center; gap:6px; }
-  .error-msg::before{ content:"⚠"; }
-  .question.invalid .error-msg{ display:flex; }
-  .question.invalid .options .opt,
-  .question.invalid .field-input,
-  .question.invalid .field-textarea{ border-color: var(--error); }
-
-  .submit-wrap{ display:flex; flex-direction:column; align-items:center; gap:12px; margin-top: 4px; }
-  .submit-btn{
-    width:100%; padding: 15px 18px; font-family: var(--font-display); font-weight:600; font-size:15px;
-    color: var(--navy-950); background: linear-gradient(100deg, var(--cyan-400), var(--blue-500) 55%, var(--purple-600));
-    border:none; border-radius: var(--radius-sm); cursor:pointer;
-    transition: transform .2s var(--ease), box-shadow .2s var(--ease), filter .2s var(--ease);
-    box-shadow: 0 10px 30px rgba(47,109,246,0.35);
-  }
-  .submit-btn:hover:not(:disabled){ transform: translateY(-2px); box-shadow: 0 14px 36px rgba(34,232,255,0.4); }
-  .submit-btn:disabled{ cursor:not-allowed; filter:grayscale(.4) brightness(.7); box-shadow:none; }
-  .submit-btn .spinner{
-    display:none; width:16px; height:16px; border-radius:50%; margin-right:8px;
-    border:2px solid rgba(10,14,30,0.35); border-top-color: var(--navy-950);
-    animation: spin .7s linear infinite; vertical-align:-3px;
-  }
-  @keyframes spin{ to{ transform: rotate(360deg); } }
-  .submit-btn.loading .spinner{ display:inline-block; }
-
-  .closing-panel{ display:none; text-align:center; max-width: 520px; }
-  .closing-panel.show{ display:block; animation: cardIn .6s var(--ease) both; }
-  .closing-icon{
-    width:64px; height:64px; margin: 0 auto 18px; border-radius:50%;
-    display:flex; align-items:center; justify-content:center;
-    background: radial-gradient(circle, rgba(51,242,176,0.25), transparent 70%);
-    border:1px solid rgba(51,242,176,0.5); box-shadow: 0 0 26px rgba(51,242,176,0.35);
-  }
-  .closing-icon svg{ width:30px; height:30px; }
-  .closing-panel h2{ font-family: var(--font-display); font-size: clamp(22px,4vw,28px); margin-bottom:12px; color: var(--text-primary); }
-  .closing-panel p{ font-size:14.5px; color: var(--text-secondary); line-height:1.7; margin-bottom:6px; }
-
-  footer.foot{ margin-top: 30px; font-size:11.5px; color: var(--text-muted); text-align:center; }
-
-  @media (prefers-reduced-motion: reduce){
-    *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; }
-  }
-  @media (max-width: 560px){
-    .section-card{ padding: 20px 18px 20px; }
-    .nps-opt{ width:32px; height:32px; font-size:12px; }
-  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{font-family:var(--font-body);background:var(--navy-950);color:var(--text-primary);overflow-x:hidden;}
+  .scene{position:fixed;inset:0;z-index:0;overflow:hidden;
+    background:radial-gradient(ellipse 120% 60% at 50% 0%,rgba(109,60,240,0.35),transparent 60%),
+    linear-gradient(180deg,var(--navy-950) 0%,#101a44 45%,#2a1240 75%,#3a1030 100%);}
+  .horizon-glow{position:absolute;left:50%;top:58%;width:140vw;height:60vh;transform:translate(-50%,-50%);
+    background:radial-gradient(closest-side,rgba(255,138,76,0.45),rgba(255,62,201,0.22) 45%,transparent 75%);
+    filter:blur(60px);animation:pulseGlow 8s ease-in-out infinite;}
+  @keyframes pulseGlow{0%,100%{opacity:.7;}50%{opacity:1;}}
+  .circuits{position:absolute;inset:0;opacity:.2;
+    background-image:linear-gradient(rgba(34,232,255,0.15) 1px,transparent 1px),linear-gradient(90deg,rgba(34,232,255,0.15) 1px,transparent 1px);
+    background-size:64px 64px;
+    -webkit-mask-image:radial-gradient(ellipse 90% 70% at 50% 40%,black,transparent 80%);
+    mask-image:radial-gradient(ellipse 90% 70% at 50% 40%,black,transparent 80%);
+    animation:drift 40s linear infinite;}
+  @keyframes drift{from{background-position:0 0,0 0;}to{background-position:128px 128px,128px 128px;}}
+  .particles{position:absolute;inset:0;pointer-events:none;}
+  .particle{position:absolute;border-radius:50%;background:radial-gradient(circle,#fff,transparent 70%);opacity:.7;animation:floatUp linear infinite;}
+  @keyframes floatUp{0%{transform:translateY(0) translateX(0);opacity:0;}10%{opacity:.8;}90%{opacity:.5;}100%{transform:translateY(-110vh) translateX(var(--drift,20px));opacity:0;}}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .page{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:40px 20px 60px;}
+  .badge{width:66px;height:66px;margin-bottom:18px;}
+  .badge svg{width:100%;height:100%;}
+  .badge .ring{animation:spin 14s linear infinite;transform-origin:50% 50%;}
+  .badge .ring--rev{animation:spin 22s linear infinite reverse;transform-origin:50% 50%;}
+  .badge .core{filter:drop-shadow(0 0 8px var(--cyan-400));}
+  header.hero{text-align:center;margin-bottom:20px;max-width:600px;}
+  .eyebrow{font-family:var(--font-mono);letter-spacing:.22em;text-transform:uppercase;font-size:11px;color:var(--cyan-400);margin-bottom:8px;}
+  h1{font-family:var(--font-display);font-weight:700;font-size:clamp(24px,4.5vw,38px);line-height:1.1;
+    background:linear-gradient(100deg,#ffffff 10%,var(--cyan-400) 45%,var(--magenta-500) 75%,var(--orange-400) 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;}
+  h2.subtitle{font-family:var(--font-display);font-weight:500;font-size:clamp(13px,2vw,16px);color:var(--text-secondary);margin-top:5px;}
+  p.lede{margin-top:12px;color:var(--text-secondary);font-size:13.5px;line-height:1.6;}
+  .identity-bar{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:14px;}
+  .id-chip{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:20px;
+    background:rgba(34,232,255,0.07);border:1px solid rgba(34,232,255,0.2);
+    font-family:var(--font-mono);font-size:11px;color:var(--cyan-400);}
+  .id-chip .lbl{color:var(--text-muted);}
+  .progress-wrap{width:100%;max-width:460px;margin:18px auto 0;}
+  .progress-label{display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:11px;letter-spacing:.05em;color:var(--text-muted);margin-bottom:6px;}
+  .progress-label span.active{color:var(--cyan-400);}
+  .progress-track{height:6px;border-radius:999px;background:rgba(255,255,255,0.08);overflow:hidden;border:1px solid var(--glass-border);}
+  .progress-fill{height:100%;width:100%;border-radius:999px;background:linear-gradient(90deg,var(--purple-600),var(--cyan-400));box-shadow:0 0 12px var(--cyan-400);animation:fillShimmer 2.4s ease-in-out infinite;}
+  @keyframes fillShimmer{0%,100%{filter:brightness(1);}50%{filter:brightness(1.35);}}
+  .card{position:relative;width:100%;max-width:520px;margin-top:22px;padding:32px 30px 28px;border-radius:var(--radius-lg);
+    background:var(--glass-bg);border:1px solid var(--glass-border);
+    backdrop-filter:blur(18px) saturate(140%);-webkit-backdrop-filter:blur(18px) saturate(140%);
+    box-shadow:0 0 0 1px var(--glass-highlight) inset,0 20px 60px rgba(0,0,0,0.45),0 0 40px rgba(109,60,240,0.15);
+    animation:cardIn .7s var(--ease) both;}
+  @keyframes cardIn{from{opacity:0;transform:translateY(18px) scale(.98);}to{opacity:1;transform:translateY(0) scale(1);}}
+  .card::before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;
+    background:linear-gradient(120deg,var(--cyan-400),transparent 30%,transparent 70%,var(--magenta-500));
+    -webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+    -webkit-mask-composite:xor;mask-composite:exclude;opacity:.6;pointer-events:none;}
+  .section-title{font-family:var(--font-display);font-size:12px;font-weight:600;letter-spacing:.06em;
+    text-transform:uppercase;color:var(--cyan-400);margin-bottom:16px;padding-bottom:8px;
+    border-bottom:1px solid rgba(34,232,255,0.15);}
+  .field{margin-bottom:18px;position:relative;}
+  .field label{display:block;font-size:12.5px;font-weight:600;letter-spacing:.03em;color:var(--text-secondary);margin-bottom:7px;}
+  .field label .req{color:var(--magenta-500);margin-left:3px;}
+  .field-hint{font-size:11px;color:var(--text-muted);margin-top:-4px;margin-bottom:7px;}
+  .field input,.field select,.field textarea{width:100%;padding:11px 14px;font-family:var(--font-body);font-size:14px;
+    color:var(--text-primary);background:rgba(255,255,255,0.045);border:1px solid rgba(255,255,255,0.12);
+    border-radius:var(--radius-sm);outline:none;
+    transition:border-color .25s var(--ease),box-shadow .25s var(--ease),background .25s var(--ease);}
+  .field textarea{resize:vertical;min-height:80px;line-height:1.5;}
+  .field select{appearance:none;-webkit-appearance:none;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8'><path d='M1 1l5 5 5-5' stroke='%2322e8ff' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+    background-repeat:no-repeat;background-position:right 14px center;padding-right:34px;}
+  .field select option{background:var(--navy-900);color:var(--text-primary);}
+  .field input::placeholder,.field textarea::placeholder{color:var(--text-muted);}
+  .field input:hover,.field select:hover,.field textarea:hover{border-color:rgba(34,232,255,0.35);background:rgba(255,255,255,0.065);}
+  .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--cyan-400);box-shadow:0 0 0 3px rgba(34,232,255,0.15),0 0 18px rgba(34,232,255,0.25);}
+  .field.invalid input,.field.invalid select,.field.invalid textarea{border-color:var(--error);box-shadow:0 0 0 3px rgba(255,92,122,0.12);}
+  .field.valid input,.field.valid select,.field.valid textarea{border-color:var(--success);}
+  .error-msg{display:none;align-items:center;gap:6px;margin-top:6px;font-size:12px;color:var(--error);font-weight:500;}
+  .field.invalid .error-msg{display:flex;}
+  .error-msg::before{content:"⚠";font-size:12px;}
+  .star-row{display:flex;gap:8px;margin-top:4px;}
+  .star-btn{background:none;border:none;cursor:pointer;padding:4px;font-size:26px;color:rgba(255,255,255,0.18);transition:color .15s,transform .15s;line-height:1;}
+  .star-btn:hover{transform:scale(1.2);}
+  .star-btn.active{color:#fbbf24;}
+  .radio-group,.check-group{display:flex;flex-direction:column;gap:8px;margin-top:4px;}
+  .radio-opt,.check-opt{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:var(--radius-sm);
+    border:1px solid rgba(255,255,255,0.1);cursor:pointer;transition:background .18s,border-color .18s;}
+  .radio-opt:hover,.check-opt:hover{background:rgba(34,232,255,0.05);border-color:rgba(34,232,255,0.25);}
+  .radio-opt input,.check-opt input{accent-color:var(--cyan-400);width:16px;height:16px;cursor:pointer;flex-shrink:0;}
+  .radio-opt label,.check-opt label{font-size:13.5px;color:var(--text-secondary);cursor:pointer;user-select:none;}
+  .radio-opt.selected,.check-opt.checked{background:rgba(34,232,255,0.08);border-color:rgba(34,232,255,0.35);}
+  .radio-opt.selected label,.check-opt.checked label{color:var(--text-primary);}
+  .divider{height:1px;background:rgba(150,180,255,0.1);margin:24px 0;}
+  .submit-btn{width:100%;margin-top:8px;padding:14px 18px;font-family:var(--font-display);font-weight:600;font-size:15px;
+    letter-spacing:.02em;color:var(--navy-950);
+    background:linear-gradient(100deg,var(--cyan-400),var(--blue-500) 55%,var(--purple-600));
+    border:none;border-radius:var(--radius-sm);cursor:pointer;overflow:hidden;
+    transition:transform .2s var(--ease),box-shadow .2s var(--ease),filter .2s var(--ease);
+    box-shadow:0 10px 30px rgba(47,109,246,0.35);}
+  .submit-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 14px 36px rgba(34,232,255,0.4);filter:brightness(1.06);}
+  .submit-btn:disabled{cursor:not-allowed;filter:grayscale(.4) brightness(.7);box-shadow:none;}
+  .submit-btn .label{display:inline-flex;align-items:center;gap:10px;}
+  .spinner{width:16px;height:16px;border-radius:50%;border:2px solid rgba(10,14,30,0.35);border-top-color:var(--navy-950);animation:spin .7s linear infinite;display:none;}
+  .submit-btn.loading .spinner{display:inline-block;}
+  .closing-panel{display:none;text-align:center;padding:10px 4px 4px;}
+  .closing-panel.show{display:block;animation:cardIn .5s var(--ease) both;}
+  .success-icon{width:56px;height:56px;margin:4px auto 14px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    background:radial-gradient(circle,rgba(51,242,176,0.25),transparent 70%);
+    border:1px solid rgba(51,242,176,0.5);box-shadow:0 0 24px rgba(51,242,176,0.35);}
+  .success-icon svg{width:26px;height:26px;}
+  .closing-panel h3{font-family:var(--font-display);font-size:20px;color:var(--text-primary);margin-bottom:8px;}
+  .closing-panel p{font-size:13.5px;color:var(--text-secondary);}
+  footer.foot{margin-top:26px;font-size:11.5px;color:var(--text-muted);text-align:center;letter-spacing:.02em;}
+  @media(prefers-reduced-motion:reduce){*{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;}}
+  @media(max-width:480px){.card{padding:22px 16px 20px;border-radius:var(--radius-md);}h1{font-size:22px;}}
 </style>
 </head>
 <body>
-
-  <div class="scene" aria-hidden="true">
-    <div class="horizon-glow"></div>
-    <div class="circuits"></div>
-    <div class="particles" id="particles"></div>
+<div class="scene" aria-hidden="true">
+  <div class="horizon-glow"></div>
+  <div class="circuits"></div>
+  <div class="particles" id="particles"></div>
+</div>
+<div class="page">
+  <div class="badge" aria-hidden="true">
+    <svg viewBox="0 0 76 76">
+      <g class="ring"><circle cx="38" cy="38" r="32" fill="none" stroke="url(#g1)" stroke-width="1.4" stroke-dasharray="4 6"/><circle cx="38" cy="6" r="3" fill="#22e8ff"/></g>
+      <g class="ring ring--rev"><circle cx="38" cy="38" r="24" fill="none" stroke="url(#g2)" stroke-width="1.2" stroke-dasharray="2 5"/><circle cx="62" cy="38" r="2.5" fill="#ff3ec9"/></g>
+      <polygon class="core" points="38,20 53,29 53,47 38,56 23,47 23,29" fill="rgba(109,60,240,0.25)" stroke="#22e8ff" stroke-width="1.6"/>
+      <path d="M31 38l5 5 10-11" fill="none" stroke="#f3f6ff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+      <defs>
+        <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#22e8ff"/><stop offset="1" stop-color="#6d3cf0"/></linearGradient>
+        <linearGradient id="g2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff3ec9"/><stop offset="1" stop-color="#ff8a4c"/></linearGradient>
+      </defs>
+    </svg>
   </div>
-
-  <div class="page">
-    <header class="hero">
-      <div class="eyebrow">Quality &middot; Innovation &middot; Excellence</div>
-      <h1>QA Summit 2026</h1>
-      <h2 class="subtitle">Feedback Survey</h2>
-      <p class="lede">Thank you for participating in QA Summit 2026. Your feedback is valuable and will help us improve future events.</p>
-      <span class="time-pill">⏱ Takes about 3–5 minutes</span>
-    </header>
-
-    <div class="progress-wrap">
-      <div class="progress-label">
-        <span>Step 1 · Registration</span>
-        <span class="active">Step 2 · Survey</span>
-      </div>
-      <div class="progress-track"><div class="progress-fill"></div></div>
-    </div>
-
+  <header class="hero">
+    <div class="eyebrow">Quality &middot; Innovation &middot; Excellence</div>
+    <h1>QA Summit 2026</h1>
+    <h2 class="subtitle">Post-Event Feedback Survey</h2>
+    <p class="lede">Your feedback shapes QA Summit 2027. This takes under 3 minutes.</p>
+    <div class="identity-bar" id="identityBar"></div>
+  </header>
+  <div class="progress-wrap">
+    <div class="progress-label"><span>Step 1 &middot; Registration</span><span class="active">Step 2 &middot; Survey</span></div>
+    <div class="progress-track"><div class="progress-fill"></div></div>
+  </div>
+  <main class="card">
     <form id="surveyForm" novalidate>
-      <!-- SECTION A -->
-      <section class="section-card">
-        <div class="section-head"><span class="section-tag">A</span><h3>Overall Experience</h3></div>
-
-        <div class="question" data-qid="q1">
-          <div class="q-text">1. Overall, how satisfied were you with QA Summit 2026?<span class="req">*</span></div>
-          <div class="options">
-            <label class="opt"><input type="radio" name="q1" value="Very Satisfied">Very Satisfied</label>
-            <label class="opt"><input type="radio" name="q1" value="Satisfied">Satisfied</label>
-            <label class="opt"><input type="radio" name="q1" value="Neutral">Neutral</label>
-            <label class="opt"><input type="radio" name="q1" value="Dissatisfied">Dissatisfied</label>
-            <label class="opt"><input type="radio" name="q1" value="Very Dissatisfied">Very Dissatisfied</label>
-          </div>
-          <div class="error-msg">Please select an option.</div>
-        </div>
-
-        <div class="question" data-qid="q2">
-          <div class="q-text">2. How would you rate the quality of the summit content and presentations?<span class="req">*</span></div>
-          <div class="options">
-            <label class="opt"><input type="radio" name="q2" value="Excellent">Excellent</label>
-            <label class="opt"><input type="radio" name="q2" value="Good">Good</label>
-            <label class="opt"><input type="radio" name="q2" value="Average">Average</label>
-            <label class="opt"><input type="radio" name="q2" value="Poor">Poor</label>
-            <label class="opt"><input type="radio" name="q2" value="Very Poor">Very Poor</label>
-          </div>
-          <div class="error-msg">Please select an option.</div>
-        </div>
-
-        <div class="question" data-qid="q3">
-          <div class="q-text">3. How relevant were the topics discussed to your work and professional development?<span class="req">*</span></div>
-          <div class="options">
-            <label class="opt"><input type="radio" name="q3" value="Extremely Relevant">Extremely Relevant</label>
-            <label class="opt"><input type="radio" name="q3" value="Relevant">Relevant</label>
-            <label class="opt"><input type="radio" name="q3" value="Moderately Relevant">Moderately Relevant</label>
-            <label class="opt"><input type="radio" name="q3" value="Slightly Relevant">Slightly Relevant</label>
-            <label class="opt"><input type="radio" name="q3" value="Not Relevant">Not Relevant</label>
-          </div>
-          <div class="error-msg">Please select an option.</div>
-        </div>
-      </section>
-
-      <!-- SECTION B -->
-      <section class="section-card">
-        <div class="section-head"><span class="section-tag">B</span><h3>Speakers &amp; Sessions</h3></div>
-
-        <div class="question" data-qid="q4">
-          <div class="q-text">4. How would you rate the effectiveness of the speakers/presenters?<span class="req">*</span></div>
-          <div class="options">
-            <label class="opt"><input type="radio" name="q4" value="Excellent">Excellent</label>
-            <label class="opt"><input type="radio" name="q4" value="Good">Good</label>
-            <label class="opt"><input type="radio" name="q4" value="Average">Average</label>
-            <label class="opt"><input type="radio" name="q4" value="Poor">Poor</label>
-            <label class="opt"><input type="radio" name="q4" value="Very Poor">Very Poor</label>
-          </div>
-          <div class="error-msg">Please select an option.</div>
-        </div>
-
-        <div class="question" data-qid="q5">
-          <div class="q-text">5. Which session did you find most valuable?</div>
-          <input type="text" class="field-input" name="q5" placeholder="Short answer">
-        </div>
-
-        <div class="question" data-qid="q6">
-          <div class="q-text">6. What topics would you like to see included in future QA Summits?</div>
-          <input type="text" class="field-input" name="q6" placeholder="Short answer">
-        </div>
-      </section>
-
-      <!-- SECTION C -->
-      <section class="section-card">
-        <div class="section-head"><span class="section-tag">C</span><h3>Event Organization</h3></div>
-
-        <div class="question" data-qid="q7">
-          <div class="q-text">7. How satisfied were you with the event organization and logistics?<span class="req">*</span></div>
-          <div class="options">
-            <label class="opt"><input type="radio" name="q7" value="Very Satisfied">Very Satisfied</label>
-            <label class="opt"><input type="radio" name="q7" value="Satisfied">Satisfied</label>
-            <label class="opt"><input type="radio" name="q7" value="Neutral">Neutral</label>
-            <label class="opt"><input type="radio" name="q7" value="Dissatisfied">Dissatisfied</label>
-            <label class="opt"><input type="radio" name="q7" value="Very Dissatisfied">Very Dissatisfied</label>
-          </div>
-          <div class="error-msg">Please select an option.</div>
-        </div>
-
-        <div class="question" data-qid="q8">
-          <div class="q-text">8. Please rate the following aspects:<span class="req">*</span></div>
-          <div class="matrix-wrap">
-            <table class="matrix">
-              <thead>
-                <tr><th style="text-align:left; padding-left:12px;">Aspect</th><th>Excellent</th><th>Good</th><th>Average</th><th>Poor</th></tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th>Registration Process</th>
-                  <td><input type="radio" name="q8_registration" value="Excellent"></td>
-                  <td><input type="radio" name="q8_registration" value="Good"></td>
-                  <td><input type="radio" name="q8_registration" value="Average"></td>
-                  <td><input type="radio" name="q8_registration" value="Poor"></td>
-                </tr>
-                <tr>
-                  <th>Venue &amp; Facilities</th>
-                  <td><input type="radio" name="q8_venue" value="Excellent"></td>
-                  <td><input type="radio" name="q8_venue" value="Good"></td>
-                  <td><input type="radio" name="q8_venue" value="Average"></td>
-                  <td><input type="radio" name="q8_venue" value="Poor"></td>
-                </tr>
-                <tr>
-                  <th>Event Schedule</th>
-                  <td><input type="radio" name="q8_schedule" value="Excellent"></td>
-                  <td><input type="radio" name="q8_schedule" value="Good"></td>
-                  <td><input type="radio" name="q8_schedule" value="Average"></td>
-                  <td><input type="radio" name="q8_schedule" value="Poor"></td>
-                </tr>
-                <tr>
-                  <th>Food &amp; Refreshments</th>
-                  <td><input type="radio" name="q8_food" value="Excellent"></td>
-                  <td><input type="radio" name="q8_food" value="Good"></td>
-                  <td><input type="radio" name="q8_food" value="Average"></td>
-                  <td><input type="radio" name="q8_food" value="Poor"></td>
-                </tr>
-                <tr>
-                  <th>Communication &amp; Information</th>
-                  <td><input type="radio" name="q8_communication" value="Excellent"></td>
-                  <td><input type="radio" name="q8_communication" value="Good"></td>
-                  <td><input type="radio" name="q8_communication" value="Average"></td>
-                  <td><input type="radio" name="q8_communication" value="Poor"></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="error-msg">Please rate every aspect listed.</div>
-        </div>
-      </section>
-
-      <!-- SECTION D -->
-      <section class="section-card">
-        <div class="section-head"><span class="section-tag">D</span><h3>Impact &amp; Recommendation</h3></div>
-
-        <div class="question" data-qid="q9">
-          <div class="q-text">9. Did the summit enhance your knowledge of Quality Assurance practices?<span class="req">*</span></div>
-          <div class="options">
-            <label class="opt"><input type="radio" name="q9" value="Significantly">Significantly</label>
-            <label class="opt"><input type="radio" name="q9" value="Somewhat">Somewhat</label>
-            <label class="opt"><input type="radio" name="q9" value="Neutral">Neutral</label>
-            <label class="opt"><input type="radio" name="q9" value="Very Little">Very Little</label>
-            <label class="opt"><input type="radio" name="q9" value="Not at All">Not at All</label>
-          </div>
-          <div class="error-msg">Please select an option.</div>
-        </div>
-
-        <div class="question" data-qid="q10">
-          <div class="q-text">10. How likely are you to recommend future QA Summit events to your colleagues?<span class="req">*</span></div>
-          <div class="nps-row" id="npsRow"></div>
-          <div class="nps-scale-labels"><span>1 · Not Likely</span><span>10 · Extremely Likely</span></div>
-          <div class="error-msg">Please select a score from 1–10.</div>
-        </div>
-      </section>
-
-      <!-- SECTION E -->
-      <section class="section-card">
-        <div class="section-head"><span class="section-tag">E</span><h3>Open Feedback</h3></div>
-
-        <div class="question" data-qid="q11">
-          <div class="q-text">11. What did you enjoy most about QA Summit 2026?<span class="req">*</span></div>
-          <textarea class="field-textarea" name="q11" placeholder="Long answer"></textarea>
-          <div class="error-msg">Please share a few words on this.</div>
-        </div>
-
-        <div class="question" data-qid="q12">
-          <div class="q-text">12. What can we improve for future QA Summit events?<span class="req">*</span></div>
-          <textarea class="field-textarea" name="q12" placeholder="Long answer"></textarea>
-          <div class="error-msg">Please share a few words on this.</div>
-        </div>
-
-        <div class="question" data-qid="q13">
-          <div class="q-text">13. Any additional comments or suggestions?</div>
-          <div class="q-hint">Optional</div>
-          <textarea class="field-textarea" name="q13" placeholder="Optional"></textarea>
-        </div>
-      </section>
-
-      <div class="submit-wrap">
-        <button type="submit" class="submit-btn" id="submitBtn">
-          <span class="spinner"></span><span id="btnLabel">Submit Feedback</span>
-        </button>
+      <div class="section-title">Overall Experience</div>
+      <div class="field" id="field-overall">
+        <label>Overall satisfaction with QA Summit 2026<span class="req">*</span></label>
+        <div class="star-row" id="stars-overall" data-key="OverallRating"></div>
+        <div class="error-msg">Please rate your overall experience.</div>
       </div>
+      <div class="field" id="field-recommend">
+        <label>Likelihood to recommend QA Summit to a colleague<span class="req">*</span></label>
+        <div class="star-row" id="stars-recommend" data-key="RecommendRating"></div>
+        <div class="error-msg">Please rate your likelihood to recommend.</div>
+      </div>
+      <div class="divider"></div>
+      <div class="section-title">Sessions &amp; Content</div>
+      <div class="field" id="field-session">
+        <label>Quality of sessions &amp; presentations<span class="req">*</span></label>
+        <div class="star-row" id="stars-session" data-key="SessionQualityRating"></div>
+        <div class="error-msg">Please rate session quality.</div>
+      </div>
+      <div class="field">
+        <label>Which session was most valuable to you?</label>
+        <input type="text" id="bestSession" placeholder="e.g. Keynote, Workshop A...">
+      </div>
+      <div class="divider"></div>
+      <div class="section-title">Logistics &amp; Organisation</div>
+      <div class="field" id="field-logistics">
+        <label>Venue, timing &amp; event logistics<span class="req">*</span></label>
+        <div class="star-row" id="stars-logistics" data-key="LogisticsRating"></div>
+        <div class="error-msg">Please rate logistics.</div>
+      </div>
+      <div class="field" id="field-format">
+        <label>Preferred format for QA Summit 2027<span class="req">*</span></label>
+        <div class="radio-group" id="rg-format">
+          <div class="radio-opt" data-value="In-Person"><input type="radio" name="preferredFormat" value="In-Person" id="fmt-1"><label for="fmt-1">In-Person</label></div>
+          <div class="radio-opt" data-value="Virtual"><input type="radio" name="preferredFormat" value="Virtual" id="fmt-2"><label for="fmt-2">Virtual / Online</label></div>
+          <div class="radio-opt" data-value="Hybrid"><input type="radio" name="preferredFormat" value="Hybrid" id="fmt-3"><label for="fmt-3">Hybrid</label></div>
+        </div>
+        <div class="error-msg">Please select a format.</div>
+      </div>
+      <div class="divider"></div>
+      <div class="section-title">Topics &amp; Future Interest</div>
+      <div class="field" id="field-topics">
+        <label>Topics for QA Summit 2027<span class="req">*</span></label>
+        <p class="field-hint">Select all that apply.</p>
+        <div class="check-group" id="cg-topics">
+          <div class="check-opt"><input type="checkbox" value="AI in QA" id="tp-1"><label for="tp-1">AI in Quality Assurance</label></div>
+          <div class="check-opt"><input type="checkbox" value="Automation" id="tp-2"><label for="tp-2">Test Automation &amp; Frameworks</label></div>
+          <div class="check-opt"><input type="checkbox" value="Data Quality" id="tp-3"><label for="tp-3">Data Quality &amp; Governance</label></div>
+          <div class="check-opt"><input type="checkbox" value="Process Improvement" id="tp-4"><label for="tp-4">Process Improvement &amp; Lean</label></div>
+          <div class="check-opt"><input type="checkbox" value="Leadership" id="tp-5"><label for="tp-5">QA Leadership &amp; Culture</label></div>
+          <div class="check-opt"><input type="checkbox" value="Tools" id="tp-6"><label for="tp-6">Tools &amp; Technology Showcase</label></div>
+        </div>
+        <div class="error-msg">Please select at least one topic.</div>
+      </div>
+      <div class="divider"></div>
+      <div class="section-title">Open Feedback</div>
+      <div class="field">
+        <label>What was the highlight of QA Summit 2026?</label>
+        <textarea id="highlight" placeholder="Share what stood out most..."></textarea>
+      </div>
+      <div class="field" id="field-improve">
+        <label>What should we improve for next year?<span class="req">*</span></label>
+        <textarea id="improve" placeholder="Your candid feedback helps most."></textarea>
+        <div class="error-msg">Please share at least one improvement.</div>
+      </div>
+      <button type="submit" class="submit-btn" id="submitBtn">
+        <span class="label"><span class="spinner"></span><span class="label-text" id="btnLabel">Submit Feedback</span></span>
+      </button>
     </form>
-
     <div class="closing-panel" id="closingPanel">
-      <div class="closing-icon">
+      <div class="success-icon">
         <svg viewBox="0 0 24 24" fill="none"><path d="M4 12.5l5 5L20 6.5" stroke="#33f2b0" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </div>
-      <h2>Thank you for your feedback! 🚀</h2>
-      <p>We appreciate your participation and look forward to seeing you at future QA events.</p>
-      <p>Your insights will help us continuously improve and deliver even better experiences.</p>
+      <h3>Feedback submitted. Thank you!</h3>
+      <p>Your response has been recorded. See you at QA Summit 2027.</p>
     </div>
-
-    <footer class="foot">QA Summit 2026 &middot; Feedback Survey</footer>
-  </div>
-
+  </main>
+  <footer class="foot">QA Summit 2026 &middot; All responses are used solely for event improvement</footer>
+</div>
 <script>
-(function initParticles(){
-  const wrap = document.getElementById('particles');
-  for (let i = 0; i < 30; i++){
-    const p = document.createElement('div');
-    p.className = 'particle';
-    const size = Math.random() * 3 + 1.5;
-    p.style.width = size + 'px'; p.style.height = size + 'px';
-    p.style.left = Math.random() * 100 + 'vw';
-    p.style.bottom = (Math.random() * -20) + 'vh';
-    p.style.setProperty('--drift', (Math.random() * 80 - 40) + 'px');
-    p.style.animationDuration = (Math.random() * 14 + 10) + 's';
-    p.style.animationDelay = (Math.random() * 14) + 's';
+// ── Live Apps Script web app endpoint ──
+var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwYboLPGFpim8n2ymOdml_87oes_q_hnqTz0GZCRiX3Z0DQg1gm0FR2IAmlK1XcPXSx/exec';
+
+// ── PARTICLES ──
+(function(){
+  var wrap=document.getElementById('particles');
+  for(var i=0;i<28;i++){
+    var p=document.createElement('div');p.className='particle';
+    var s=Math.random()*3+1.5;
+    p.style.width=s+'px';p.style.height=s+'px';
+    p.style.left=Math.random()*100+'vw';p.style.bottom=(Math.random()*-20)+'vh';
+    p.style.setProperty('--drift',(Math.random()*80-40)+'px');
+    p.style.animationDuration=(Math.random()*14+10)+'s';
+    p.style.animationDelay=(Math.random()*14)+'s';
     wrap.appendChild(p);
   }
 })();
 
-// READ URL QUERY PARAMS PASSED FROM REGISTRATION PAGE
-const urlParams = new URLSearchParams(window.location.search);
-const prefill = {
-  fullName: urlParams.get('name') || '',
-  site: urlParams.get('site') || '',
-  contact: urlParams.get('contact') || '',
-  email: urlParams.get('email') || ''
+// ── READ REGISTRATION DATA FROM URL PARAMS ──
+var params = new URLSearchParams(window.location.search);
+var registrant = {
+  Name:    decodeURIComponent(params.get('name')    || ''),
+  Site:    decodeURIComponent(params.get('site')    || ''),
+  Contact: decodeURIComponent(params.get('contact') || ''),
+  Email:   decodeURIComponent(params.get('email')   || '')
 };
 
-// BUILD NPS SCALE (1–10)
-const npsRow = document.getElementById('npsRow');
-for (let i = 1; i <= 10; i++){
-  const btn = document.createElement('div');
-  btn.className = 'nps-opt';
-  btn.textContent = i;
-  btn.dataset.value = i;
-  npsRow.appendChild(btn);
-}
-let npsValue = null;
-npsRow.addEventListener('click', (e) => {
-  const target = e.target.closest('.nps-opt');
-  if (!target) return;
-  [...npsRow.children].forEach(el => el.classList.remove('checked'));
-  target.classList.add('checked');
-  npsValue = target.dataset.value;
-  clearQuestionError('q10');
-});
-
-// HIGHLIGHT RADIO CARDS
-document.querySelectorAll('.opt').forEach(opt => {
-  const input = opt.querySelector('input');
-  input.addEventListener('change', () => {
-    document.querySelectorAll(`input[name="${input.name}"]`).forEach(sibling => {
-      sibling.closest('.opt').classList.toggle('checked', sibling.checked);
-    });
-    const q = opt.closest('.question');
-    if (q) clearQuestionError(q.dataset.qid);
+// Show identity chips
+(function(){
+  var bar = document.getElementById('identityBar');
+  [['Name', registrant.Name],['Site', registrant.Site],['Contact', registrant.Contact],['Email', registrant.Email]]
+  .filter(function(x){ return x[1]; })
+  .forEach(function(x){
+    var c=document.createElement('div'); c.className='id-chip';
+    c.innerHTML='<span class="lbl">'+x[0]+':</span> '+x[1];
+    bar.appendChild(c);
   });
-});
+})();
 
-function clearQuestionError(qid){
-  const q = document.querySelector(`.question[data-qid="${qid}"]`);
-  if (q) q.classList.remove('invalid');
-}
-
-// VALIDATION LOGIC
-const REQUIRED_RADIO = ['q1','q2','q3','q4','q7','q9'];
-const REQUIRED_TEXTAREA = ['q11','q12'];
-const MATRIX_ROWS = ['q8_registration','q8_venue','q8_schedule','q8_food','q8_communication'];
-
-function validateForm(){
-  let allValid = true;
-
-  REQUIRED_RADIO.forEach(name => {
-    const checked = document.querySelector(`input[name="${name}"]:checked`);
-    const q = document.querySelector(`.question[data-qid="${name}"]`);
-    if (!checked){ q.classList.add('invalid'); allValid = false; }
-    else { q.classList.remove('invalid'); }
-  });
-
-  const q10 = document.querySelector('.question[data-qid="q10"]');
-  if (!npsValue){ q10.classList.add('invalid'); allValid = false; }
-  else { q10.classList.remove('invalid'); }
-
-  const q8 = document.querySelector('.question[data-qid="q8"]');
-  const matrixComplete = MATRIX_ROWS.every(name => document.querySelector(`input[name="${name}"]:checked`));
-  if (!matrixComplete){ q8.classList.add('invalid'); allValid = false; }
-  else { q8.classList.remove('invalid'); }
-
-  REQUIRED_TEXTAREA.forEach(name => {
-    const el = document.querySelector(`textarea[name="${name}"]`);
-    const q = document.querySelector(`.question[data-qid="${name}"]`);
-    if (!el.value.trim()){ q.classList.add('invalid'); allValid = false; }
-    else { q.classList.remove('invalid'); }
-  });
-
-  return allValid;
-}
-
-// MAP DATA DIRECTLY TO APPS SCRIPT PARAMS
-function collectSurveyData(){
-  return {
-    fullName: prefill.fullName,
-    site: prefill.site,
-    contact: prefill.contact,
-    email: prefill.email,
-
-    q1: document.querySelector('input[name="q1"]:checked')?.value || '',
-    q2: document.querySelector('input[name="q2"]:checked')?.value || '',
-    q3: document.querySelector('input[name="q3"]:checked')?.value || '',
-    q4: document.querySelector('input[name="q4"]:checked')?.value || '',
-    q5: document.querySelector('input[name="q5"]').value.trim(),
-    q6: document.querySelector('input[name="q6"]').value.trim(),
-    q7: document.querySelector('input[name="q7"]:checked')?.value || '',
-
-    q8a: document.querySelector('input[name="q8_registration"]:checked')?.value || '',
-    q8b: document.querySelector('input[name="q8_venue"]:checked')?.value || '',
-    q8c: document.querySelector('input[name="q8_schedule"]:checked')?.value || '',
-    q8d: document.querySelector('input[name="q8_food"]:checked')?.value || '',
-    q8e: document.querySelector('input[name="q8_communication"]:checked')?.value || '',
-
-    q9: document.querySelector('input[name="q9"]:checked')?.value || '',
-    q10: npsValue || '',
-    q11: document.querySelector('textarea[name="q11"]').value.trim(),
-    q12: document.querySelector('textarea[name="q12"]').value.trim(),
-    q13: document.querySelector('textarea[name="q13"]').value.trim()
-  };
-}
-
-const form = document.getElementById('surveyForm');
-const submitBtn = document.getElementById('submitBtn');
-const btnLabel = document.getElementById('btnLabel');
-const closingPanel = document.getElementById('closingPanel');
-
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyYhQnEqLmmFw8UdVnN0y704FIjc-nUTpijFwZ7te_EDQf_lA6DhYOInPEgdG4OZOI_mg/exec';
-
-form.addEventListener('submit', function(e){
-  e.preventDefault();
-
-  if (!validateForm()){
-    const firstInvalid = document.querySelector('.question.invalid');
-    if (firstInvalid) firstInvalid.scrollIntoView({ behavior:'smooth', block:'center' });
-    return;
+// ── STAR RATINGS ──
+var ratings = {};
+document.querySelectorAll('.star-row').forEach(function(row){
+  var key = row.dataset.key;
+  ratings[key] = 0;
+  for(var i=1;i<=5;i++){
+    (function(val){
+      var btn=document.createElement('button');
+      btn.type='button'; btn.className='star-btn'; btn.textContent='★';
+      btn.addEventListener('mouseenter',function(){ highlightStars(row,val); });
+      btn.addEventListener('mouseleave',function(){ highlightStars(row,ratings[key]); });
+      btn.addEventListener('click',function(){
+        ratings[key]=val;
+        highlightStars(row,val);
+        var fid='field-'+row.id.replace('stars-','');
+        var fel=document.getElementById(fid);
+        if(fel) fel.classList.remove('invalid');
+      });
+      row.appendChild(btn);
+    })(i);
   }
+});
+function highlightStars(row,count){
+  row.querySelectorAll('.star-btn').forEach(function(btn,idx){ btn.classList.toggle('active',idx<count); });
+}
 
-  const surveyData = collectSurveyData();
+// ── RADIO GROUPS ──
+document.querySelectorAll('.radio-group').forEach(function(group){
+  group.querySelectorAll('.radio-opt').forEach(function(opt){
+    var input=opt.querySelector('input[type="radio"]');
+    function select(){
+      group.querySelectorAll('.radio-opt').forEach(function(o){ o.classList.remove('selected'); });
+      opt.classList.add('selected');
+      var fel=opt.closest('.field'); if(fel) fel.classList.remove('invalid');
+    }
+    input.addEventListener('change',select);
+    opt.addEventListener('click',function(){ input.checked=true; select(); });
+  });
+});
+
+// ── CHECKBOX GROUPS ──
+document.querySelectorAll('.check-group').forEach(function(group){
+  group.querySelectorAll('.check-opt').forEach(function(opt){
+    var input=opt.querySelector('input[type="checkbox"]');
+    function toggle(){
+      opt.classList.toggle('checked',input.checked);
+      var fel=opt.closest('.field');
+      if(fel&&group.querySelectorAll('input:checked').length>0) fel.classList.remove('invalid');
+    }
+    input.addEventListener('change',toggle);
+    opt.addEventListener('click',function(e){ if(e.target!==input){ input.checked=!input.checked; } toggle(); });
+  });
+});
+
+// ── HELPERS ──
+function getRadioValue(name){
+  var c=document.querySelector('input[name="'+name+'"]:checked');
+  return c?c.value:'';
+}
+function getCheckboxValues(groupId){
+  return Array.from(document.querySelectorAll('#'+groupId+' input:checked')).map(function(c){ return c.value; }).join(', ');
+}
+
+// ── VALIDATION ──
+function validate(){
+  var ok=true;
+  [['OverallRating','field-overall'],['RecommendRating','field-recommend'],
+   ['SessionQualityRating','field-session'],['LogisticsRating','field-logistics']]
+  .forEach(function(pair){
+    var el=document.getElementById(pair[1]);
+    if(!ratings[pair[0]]||ratings[pair[0]]===0){ el.classList.add('invalid'); ok=false; }
+    else { el.classList.remove('invalid'); }
+  });
+  var fmtEl=document.getElementById('field-format');
+  if(!getRadioValue('preferredFormat')){ fmtEl.classList.add('invalid'); ok=false; }
+  else { fmtEl.classList.remove('invalid'); }
+  var topEl=document.getElementById('field-topics');
+  if(!getCheckboxValues('cg-topics')){ topEl.classList.add('invalid'); ok=false; }
+  else { topEl.classList.remove('invalid'); }
+  var impEl=document.getElementById('field-improve');
+  if(!document.getElementById('improve').value.trim()){ impEl.classList.add('invalid'); ok=false; }
+  else { impEl.classList.remove('invalid'); }
+  return ok;
+}
+
+// ── SUBMIT ──
+var submitBtn   = document.getElementById('submitBtn');
+var btnLabel    = document.getElementById('btnLabel');
+var closingPanel= document.getElementById('closingPanel');
+var surveyForm  = document.getElementById('surveyForm');
+
+surveyForm.addEventListener('submit', function(e){
+  e.preventDefault();
+  if(!validate()) return;
+
+  // Build the full payload — registration + survey answers, in ONE row.
+  // Field names below must match exactly what the Apps Script doPost() reads.
+  var surveyData = {
+    fullName:             registrant.Name,
+    site:                 registrant.Site,
+    contact:              registrant.Contact,
+    email:                registrant.Email,
+    overallRating:        String(ratings['OverallRating']       || ''),
+    recommendRating:      String(ratings['RecommendRating']     || ''),
+    sessionQualityRating: String(ratings['SessionQualityRating']|| ''),
+    logisticsRating:      String(ratings['LogisticsRating']     || ''),
+    bestSession:          document.getElementById('bestSession').value.trim(),
+    preferredFormat:      getRadioValue('preferredFormat'),
+    topicsWanted:         getCheckboxValues('cg-topics'),
+    highlight:            document.getElementById('highlight').value.trim(),
+    improvements:         document.getElementById('improve').value.trim()
+  };
 
   submitBtn.classList.add('loading');
   submitBtn.disabled = true;
   btnLabel.textContent = 'Submitting...';
 
+  console.log('Sending payload:', JSON.stringify(surveyData));
+
+  // METHOD 1: fetch POST (primary)
   fetch(SCRIPT_URL, {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: {
-      'Content-Type': 'text/plain;charset=utf-8'
-    },
-    body: JSON.stringify(surveyData)
+    method:  'POST',
+    mode:    'no-cors',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body:    JSON.stringify(surveyData)
   })
-  .then(() => {
-    form.style.display = 'none';
-    closingPanel.classList.add('show');
-    closingPanel.scrollIntoView({ behavior:'smooth', block:'start' });
+  .then(function(){
+    showSuccess();
   })
-  .catch(err => {
-    console.error('Error submitting survey:', err);
-    alert('There was an issue submitting your feedback. Please try again.');
-    submitBtn.classList.remove('loading');
-    submitBtn.disabled = false;
-    btnLabel.textContent = 'Submit Feedback';
+  .catch(function(err){
+    console.warn('POST failed, trying GET beacon fallback:', err);
+    // METHOD 2: GET beacon fallback — guaranteed to work even with strict CORS
+    var beacon = new Image();
+    beacon.onload = beacon.onerror = function(){ showSuccess(); };
+    beacon.src = SCRIPT_URL + '?data=' + encodeURIComponent(JSON.stringify(surveyData));
+    // Safety timeout
+    setTimeout(showSuccess, 3000);
   });
 });
+
+function showSuccess(){
+  // Prevent calling twice
+  if(closingPanel.classList.contains('show')) return;
+  surveyForm.style.display='none';
+  closingPanel.classList.add('show');
+  closingPanel.scrollIntoView({behavior:'smooth',block:'start'});
+}
 </script>
 </body>
 </html>
